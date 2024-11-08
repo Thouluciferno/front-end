@@ -1,0 +1,11 @@
+.footer-column a {
+    color: black;
+    /* Set default text color to black */
+    transition: color 0.3s;
+    /* Add transition effect */
+}
+
+.footer-column a:hover {
+    color: green;
+    /* Change text color to green on hover */
+}

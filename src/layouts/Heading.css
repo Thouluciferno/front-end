@@ -1,0 +1,14 @@
+.heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    letter-spacing: 0.5px;
+    margin-top: 20px;
+}
+
+.heading-box.centered {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+}

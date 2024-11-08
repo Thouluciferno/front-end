@@ -1,0 +1,18 @@
+.category-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.686);
+    /* Black with 50% opacity */
+    padding: 10px;
+    /* Adjust as needed */
+    box-sizing: border-box;
+}
+
+.overlay-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    color: white;
+}
