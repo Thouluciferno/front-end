@@ -1,17 +1,20 @@
-import React, { useState } from 'react';
-import { Form, Input, Button, Typography, Space, Card } from 'antd';
-import { UserOutlined, MailOutlined, LockOutlined } from '@ant-design/icons';
-import { GoogleOutlined } from '@ant-design/icons';
+import React from 'react';
+import { Form, Input, Button, Typography, Space, Card, message } from 'antd';
+import { UserOutlined, MailOutlined, LockOutlined, PhoneOutlined, GoogleOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
+import axios from '../utils/axiosConfig';
 
 const { Title } = Typography;
 
 const RegisterPage = () => {
-    const [fullName, setFullName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const navigate = useNavigate();
+    const [username, setUsername] = React.useState('');
+    const [email, setEmail] = React.useState('');
+    const [password, setPassword] = React.useState('');
+    const [phoneNumber, setPhoneNumber] = React.useState('');
 
-    const handleFullNameChange = (e) => {
-        setFullName(e.target.value);
+    const handleUsernameChange = (e) => {
+        setUsername(e.target.value);
     };
 
     const handleEmailChange = (e) => {
@@ -22,12 +25,32 @@ const RegisterPage = () => {
         setPassword(e.target.value);
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Add your registration logic here, such as sending the user's data to the server for registration
-        console.log('Full Name:', fullName);
-        console.log('Email:', email);
-        console.log('Password:', password);
+    const handlePhoneNumberChange = (e) => {
+        setPhoneNumber(e.target.value);
+    };
+
+    const handleSubmit = async () => {
+        try {
+            const response = await axios.post('/users', {
+                username,
+                email,
+                password,
+                phoneNumber
+            });
+
+            // console.log(response);
+
+            const token = response.data.result.token;
+            console.log(token);
+            // Save token to localStorage
+            localStorage.setItem('token', token);
+
+            message.success('Registration successful!');
+            navigate('/'); // Navigate to homepage
+        } catch (error) {
+            console.error('Registration failed:', error.response?.data || error.message);
+            message.error('Registration failed. Please try again.');
+        }
     };
 
     // Function to handle Google registration
@@ -43,16 +66,16 @@ const RegisterPage = () => {
                 <Title level={2}>Register</Title>
                 <Form layout="vertical" onFinish={handleSubmit}>
                     <Form.Item
-                        label="Full Name"
-                        name="fullName"
+                        label="Username"
+                        name="username"
                         rules={[
                             {
                                 required: true,
-                                message: 'Please enter your full name!',
+                                message: 'Please enter your username!',
                             },
                         ]}
                     >
-                        <Input prefix={<UserOutlined />} value={fullName} onChange={handleFullNameChange} />
+                        <Input prefix={<UserOutlined />} value={username} onChange={handleUsernameChange} />
                     </Form.Item>
                     <Form.Item
                         label="Email"
@@ -78,7 +101,6 @@ const RegisterPage = () => {
                     >
                         <Input.Password prefix={<LockOutlined />} value={password} onChange={handlePasswordChange} />
                     </Form.Item>
-                    {/* confirm password */}
                     <Form.Item
                         label="Confirm Password"
                         name="confirmPassword"
@@ -88,8 +110,29 @@ const RegisterPage = () => {
                                 required: true,
                                 message: 'Please confirm your password!',
                             },
-                        ]} >
-                        <Input.Password prefix={<LockOutlined />} value={password} />
+                            ({ getFieldValue }) => ({
+                                validator(_, value) {
+                                    if (!value || getFieldValue('password') === value) {
+                                        return Promise.resolve();
+                                    }
+                                    return Promise.reject(new Error('The two passwords do not match!'));
+                                },
+                            }),
+                        ]}
+                    >
+                        <Input.Password prefix={<LockOutlined />} />
+                    </Form.Item>
+                    <Form.Item
+                        label="Phone Number"
+                        name="phoneNumber"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please enter your phone number!',
+                            },
+                        ]}
+                    >
+                        <Input prefix={<PhoneOutlined />} value={phoneNumber} onChange={handlePhoneNumberChange} />
                     </Form.Item>
 
                     <Form.Item>

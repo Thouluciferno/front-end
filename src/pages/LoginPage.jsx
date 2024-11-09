@@ -1,26 +1,37 @@
 import React, { useState } from 'react';
-import { Form, Input, Button, Typography, Space, Card } from 'antd';
+import { useNavigate } from 'react-router-dom';
+import { Form, Input, Button, Typography, Space, Card, message } from 'antd';
 import { GoogleOutlined, LockOutlined, UserOutlined, MailOutlined } from '@ant-design/icons';
+import axios from '../utils/axiosConfig';
+
 
 const { Title } = Typography;
 
 const LoginPage = () => {
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
-    const handleEmailChange = (e) => {
-        setEmail(e.target.value);
+    const handleUsernameChange = (e) => {
+        setUsername(e.target.value);
     };
 
     const handlePasswordChange = (e) => {
         setPassword(e.target.value);
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Add your login logic here, such as sending the email and password to the server for authentication
-        console.log('Email:', email);
-        console.log('Password:', password);
+    const handleSubmit = async () => {
+        try {
+            const response = await axios.post('/auth/token', { username, password });
+            console.log(response.data.result.token);
+            const token = response.data.result.token;
+            localStorage.setItem('token', token);
+            message.success('Login successful');
+            navigate('/'); // Navigate to the homepage
+        } catch (error) {
+            console.error('Login error:', error);
+            message.error('Login failed. Please check your credentials.');
+        }
     };
 
     return (
@@ -30,16 +41,16 @@ const LoginPage = () => {
                 <Title level={2}>Login</Title>
                 <Form layout="vertical" onFinish={handleSubmit}>
                     <Form.Item
-                        label="Email"
-                        name="email"
+                        label="Username"
+                        name="username"
                         rules={[
                             {
                                 required: true,
-                                message: 'Please enter your email!',
+                                message: 'Please enter your username!',
                             },
                         ]}
                     >
-                        <Input prefix={<MailOutlined />} type="email" value={email} onChange={handleEmailChange} />
+                        <Input prefix={<MailOutlined />} type="text" value={username} onChange={handleUsernameChange} />
                     </Form.Item>
                     <Form.Item
                         label="Password"

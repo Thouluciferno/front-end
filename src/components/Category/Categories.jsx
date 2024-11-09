@@ -1,86 +1,83 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Layout, Menu, Rate, Checkbox, Button, Row, Col } from 'antd';
-
 import { Divider } from 'antd';
 import './Categories.css';
-import Category from './Item/Category';
+import axios from '../../utils/axiosConfig';
+import PropTypes from 'prop-types';
 
 const { Sider } = Layout;
 
-const Categories = () => {
-    const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
+const Categories = ({ onCategorySelect, onRatingSelect }) => {
+    const [categories, setCategories] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const handleCheckboxChange = (checkedValues) => {
-        setSelectedCheckboxes(checkedValues);
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await axios.get('/categories');
+                // Filter only active categories
+                const activeCategories = response.data.filter(category => category.status);
+                setCategories(activeCategories);
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+                setLoading(false);
+            }
+        };
+
+        fetchCategories();
+    }, []);
+
+    console.log(categories);
+
+    const handleRatingChange = (value) => {
     };
 
-    const handleDeleteAll = () => {
-        setSelectedCheckboxes([]);
+    const handleClearAll = () => {
+
     };
 
     return (
         <Sider className='categories' width={250} style={{ marginTop: "24px", backgroundColor: "white" }}>
             <Menu theme="light" mode="inline" defaultOpenKeys={['sub1']} >
-                <Menu.SubMenu key="men" title="Men">
-                    <Checkbox.Group style={{ width: '100%' }} value={selectedCheckboxes} onChange={handleCheckboxChange}>
-                        <Menu.Item key="1">
-                            <Checkbox value="T-Shirt">T-Shirt</Checkbox>
-                        </Menu.Item>
-                        <Menu.Item key="2">
-                            <Checkbox value="Jeans">Jeans</Checkbox>
-                        </Menu.Item>
+                <Menu.SubMenu key="categories" title="Categories">
+                    <Checkbox.Group
+                        style={{ width: '100%' }}
+                    >
+                        {categories.map(category => (
+                            <Menu.Item key={category.id}>
+                                <Checkbox value={category.id}>
+                                    {category.name}
+                                </Checkbox>
+                            </Menu.Item>
+                        ))}
                     </Checkbox.Group>
                 </Menu.SubMenu>
-                <Menu.SubMenu key="women" title="Women">
-                    <Checkbox.Group style={{ width: '100%' }} value={selectedCheckboxes} onChange={handleCheckboxChange}>
-                        <Menu.Item key="3">
-                            <Checkbox value="Dress">Dress</Checkbox>
-                        </Menu.Item>
-                        <Menu.Item key="4">
-                            <Checkbox value="Skirt">Skirt</Checkbox>
-                        </Menu.Item>
-                    </Checkbox.Group>
-                </Menu.SubMenu>
-                <Divider />
-                <Menu.SubMenu key="brands" title="Brands">
-                    <Checkbox.Group style={{ width: '100%' }} value={selectedCheckboxes} onChange={handleCheckboxChange}>
-                        <Menu.Item key="5">
-                            <Checkbox value="Nike">Nike</Checkbox>
-                        </Menu.Item>
-                        <Menu.Item key="6">
-                            <Checkbox value="Adidas">Adidas</Checkbox>
-                        </Menu.Item>
-                    </Checkbox.Group>
-                </Menu.SubMenu>
-                <Divider />
-                <Menu.SubMenu key="sizes" title="Sizes">
-                    <Checkbox.Group style={{ width: '100%' }} value={selectedCheckboxes} onChange={handleCheckboxChange}>
-                        <Menu.Item key="7">
-                            <Checkbox value="Small">Small</Checkbox>
-                        </Menu.Item>
-                        <Menu.Item key="8">
-                            <Checkbox value="Medium">Medium</Checkbox>
-                        </Menu.Item>
-                        <Menu.Item key="9">
-                            <Checkbox value="Large">Large</Checkbox>
-                        </Menu.Item>
-                    </Checkbox.Group>
-                </Menu.SubMenu>
+
                 <Divider />
                 <Menu.Item key="rating">
                     <span>Rating</span>
-                    <Rate style={{ fontSize: 32, marginLeft: 8 }} character={<span style={{ fontSize: 24 }}>★</span>} allowHalf defaultValue={2.5} />
+                    <Rate
+                        style={{ fontSize: 32, marginLeft: 8 }}
+                        character={<span style={{ fontSize: 24 }}>★</span>}
+                        allowHalf
+                        onChange={handleRatingChange}
+                    />
                 </Menu.Item>
+
                 <Divider />
                 <Row justify="center" style={{ marginBottom: 16 }}>
                     <Col>
-                        <Button type="primary" onClick={handleDeleteAll} >Delete All</Button>
+                        <Button type="primary" onClick={handleClearAll}>
+                            Clear All
+                        </Button>
                     </Col>
                 </Row>
             </Menu>
         </Sider>
     );
 }
+
 
 export default Categories;
 

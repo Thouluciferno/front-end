@@ -1,34 +1,103 @@
-import React, { useState } from 'react';
-import { Layout, Menu, Avatar, Select, Upload, message, Typography, Form, Input, Button, Card, Row, Col, DatePicker } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Layout, Menu, Avatar, Select, Upload, message, Typography, Form, Input, Button, Card, Row, Col, DatePicker, Spin } from 'antd';
+import axios from '../../../utils/axiosConfig';
+import moment from 'moment';
 
 const { Text } = Typography;
 const { Item: FormItem } = Form;
-const { RangePicker } = DatePicker;
 
 const UserProfile = () => {
+    const [userData, setUserData] = useState({
+        username: '',
+        numberphone: '',
+        email: '',
+        birthday: null
+    });
+    const [loading, setLoading] = useState(false);
+    const [form] = Form.useForm();
 
-    const handleSubmit = (values) => {
-        console.log('Received values:', values);
-        // Handle form submission
+    useEffect(() => {
+        fetchUserData();
+    }, []);
+
+    const fetchUserData = async () => {
+        setLoading(true);
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.get('/users/myInfo', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            const { result } = response.data;
+
+            console.log(result);
+
+            setUserData({
+                username: result.username,
+                numberPhone: result.numberPhone,
+                email: result.email,
+            });
+
+            form.setFieldsValue({
+                username: result.username,
+                numberPhone: result.numberPhone,
+                email: result.email,
+            });
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+            message.error('Failed to load user profile');
+        } finally {
+            setLoading(false);
+        }
     };
 
+    const handleSubmit = async (values) => {
+        setLoading(true);
+        try {
+            const token = localStorage.getItem('token');
+
+            console.log(values);
+            const formData = {
+                username: values.username,
+                numberPhone: values.numberPhone,
+                email: values.email
+            };
+
+            await axios.put(`/users`, formData, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            message.success('Profile updated successfully');
+            await fetchUserData();
+        } catch (error) {
+            console.error('Error updating profile:', error);
+            message.error(error.response?.data?.message || 'Failed to update profile');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+
     return (
-        <>
+        <Spin spinning={loading}>
             <Card title="Profile Info" style={{ marginBottom: '24px' }}>
                 <Row gutter={[16, 16]} justify="start">
                     <Col xs={24} sm={12} md={8} lg={6}>
-                        <Text strong>Username:</Text>
+                        <Text strong>Username</Text>
                     </Col>
                     <Col xs={24} sm={12} md={16} lg={18}>
-                        <Text>John Doe</Text>
+                        <Text>{userData.username}</Text>
                     </Col>
                 </Row>
                 <Row gutter={[16, 16]} justify="start">
                     <Col xs={24} sm={12} md={8} lg={6}>
-                        <Text strong>Numberphone:</Text>
+                        <Text strong>NumberPhone:</Text>
                     </Col>
                     <Col xs={24} sm={12} md={16} lg={18}>
-                        <Text>1234567890</Text>
+                        <Text>{userData.numberPhone}</Text>
                     </Col>
                 </Row>
                 <Row gutter={[16, 16]} justify="start">
@@ -36,35 +105,42 @@ const UserProfile = () => {
                         <Text strong>Email:</Text>
                     </Col>
                     <Col xs={24} sm={12} md={16} lg={18}>
-                        <Text>johndoe@example.com</Text>
-                    </Col>
-                </Row>
-                <Row gutter={[16, 16]} justify="start">
-                    <Col xs={24} sm={12} md={8} lg={6}>
-                        <Text strong>Birthday:</Text>
-                    </Col>
-                    <Col xs={24} sm={12} md={16} lg={18}>
-                        <Text>01/01/1990</Text>
+                        <Text>{userData.email}</Text>
                     </Col>
                 </Row>
             </Card>
+
             <Card title="Edit Profile">
-                <Form layout="vertical" onFinish={handleSubmit}>
+                <Form
+                    form={form}
+                    layout="vertical"
+                    onFinish={handleSubmit}
+                    initialValues={userData}
+                >
                     <Row gutter={[16, 16]} justify="start">
-                        <Col xs={24} sm={12} lg={6}>
+                        {/* <Col xs={24} sm={12} lg={6}>
                             <FormItem
                                 label="Username"
                                 name="username"
-                                rules={[{ required: true, message: 'Please input your username!' }]}
+                                rules={[
+                                    { required: true, message: 'Please input your username!' },
+                                    { min: 3, message: 'Username must be at least 3 characters' }
+                                ]}
                             >
                                 <Input />
                             </FormItem>
-                        </Col>
+                        </Col> */}
                         <Col xs={24} sm={12} lg={6}>
                             <FormItem
-                                label="Numberphone"
-                                name="numberphone"
-                                rules={[{ required: true, message: 'Please input your phone number!' }]}
+                                label="Phone Number"
+                                name="numberPhone"
+                                rules={[
+                                    {
+                                        required: true, message: 'Please input your phone number!',
+                                    },
+                                    { min: 10, message: 'Phone number must be at least 10 characters' },
+                                    { max: 10, message: 'Phone number must be at most 10 characters' }
+                                ]}
                             >
                                 <Input />
                             </FormItem>
@@ -73,29 +149,23 @@ const UserProfile = () => {
                             <FormItem
                                 label="Email"
                                 name="email"
-                                rules={[{ required: true, message: 'Please input your email!' }]}
+                                rules={[
+                                    { required: true, message: 'Please input your email!' },
+                                    { type: 'email', message: 'Please enter a valid email!' }
+                                ]}
                             >
                                 <Input />
                             </FormItem>
                         </Col>
-                        <Col xs={24} sm={12} lg={6}>
-                            <FormItem
-                                label="Birthday"
-                                name="birthday"
-                                rules={[{ required: true, message: 'Please select your birthday!' }]}
-                            >
-                                <DatePicker style={{ width: '100%' }} />
-                            </FormItem>
-                        </Col>
                     </Row>
                     <FormItem>
-                        <Button type="primary" htmlType="submit">
+                        <Button type="primary" htmlType="submit" loading={loading}>
                             Save
                         </Button>
                     </FormItem>
                 </Form>
             </Card>
-        </>
+        </Spin>
     );
 };
 

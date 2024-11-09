@@ -1,5 +1,6 @@
 import React from 'react';
 import { Carousel, Flex } from 'antd';
+import { Link } from 'react-router-dom';
 import Category from './Category/Category';
 import './TopCategories.css';
 import Image from '../../assets/chair/Image.png';
@@ -16,18 +17,18 @@ const TopCategories = () => {
         <Carousel autoplay className='categories-carousel' dots={false}>
             <div className="slide">
                 <Flex className='categories' justify='space-between'>
-                    <Category image={Image} />
-                    <Category image={Image1} />
-                    <Category image={Image2} />
-                    <Category image={Image3} />
+                    <Link to="/products/1"><Category image={Image} /></Link>
+                    <Link to="/products/2"><Category image={Image1} /></Link>
+                    <Link to="/products/3"><Category image={Image2} /></Link>
+                    <Link to="/products/4"><Category image={Image3} /></Link>
                 </Flex>
             </div>
             <div className="slide">
                 <Flex className='categories' justify='space-between'>
-                    <Category image={Image1} />
-                    <Category image={Image5} />
-                    <Category image={Image7} />
-                    <Category image={Image6} />
+                    <Link to="/products/5"><Category image={Image1} /></Link>
+                    <Link to="/products/6"><Category image={Image5} /></Link>
+                    <Link to="/products/7"><Category image={Image7} /></Link>
+                    <Link to="/products/8"><Category image={Image6} /></Link>
                 </Flex>
             </div>
         </Carousel>

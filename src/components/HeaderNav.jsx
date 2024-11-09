@@ -50,13 +50,12 @@ const notificationMenu = (
     </Menu>
 );
 const HeaderNav = () => {
-    const [loggedIn, setLoggedIn] = useState(false); // State to track login status
-
-    // Function to handle logout
-    const handleLogout = () => {
-        // Perform logout logic
-        setLoggedIn(false); // Update login status to false
+    // Replace loggedIn state with a function to check token
+    const isAuthenticated = () => {
+        return localStorage.getItem('token') !== null;
     };
+
+
 
     return (
         <Header style={{ width: '100%', backgroundColor: "white" }}>
@@ -81,7 +80,7 @@ const HeaderNav = () => {
                 </Menu>
                 {/* Right menu */}
                 <Menu theme="light" mode="horizontal" defaultSelectedKeys={['1']} style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
-                    {loggedIn && ( // Conditionally render based on login status
+                    {isAuthenticated() && (
                         <Menu.Item key="3">
                             <Dropdown overlay={notificationMenu}>
                                 <Link to="/notifications" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -96,7 +95,7 @@ const HeaderNav = () => {
                     <Menu.Item key="2" icon={<ShoppingCartOutlined />} >
                         <Link to="/cart">Cart</Link>
                     </Menu.Item>
-                    {loggedIn ? ( // Conditionally render based on login status
+                    {isAuthenticated() ? (
                         <Menu.Item key="1" icon={<UserOutlined />} >
                             <Link to="/profile">Profile</Link>
                         </Menu.Item>
@@ -105,15 +104,12 @@ const HeaderNav = () => {
                             <Link to="/login">Login</Link>
                         </Menu.Item>
                     )}
-                    {loggedIn ? ( // Conditionally render based on login status
-                        <Menu.Item key="4" onClick={handleLogout}>
-                            Logout
-                        </Menu.Item>
-                    ) : (
+                    {!isAuthenticated() &&
+
                         <Menu.Item key="5">
                             <Link to="/register">Register</Link>
                         </Menu.Item>
-                    )}
+                    }
                 </Menu>
             </div>
         </Header>

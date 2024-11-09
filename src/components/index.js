@@ -28,9 +28,13 @@ import Cart from "./Cart";
 
 // Admin
 
+import AdminDashboard from "./Admin/AdminDashboard";
 import AdminSidebar from "./Admin/AdminSidebar";
 import AdminFooter from "./Admin/AdminFooter";
-import AdminDashboard from "./Admin/AdminDashboard";
+
+// Admin Component
+
+import ProductPage from "./Admin/Product/Products";
 
 export {
     Feature, HeaderNav, LogoBanner, Testimonial, Button, Products, TopCategories, Categories,

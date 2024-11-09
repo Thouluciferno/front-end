@@ -10,7 +10,8 @@ const Product = (prop) => {
             hoverable
             style={{ width: 320, marginTop: "24px" }}
             cover={<img alt="example"
-                src={prop.image}
+                // src={`../../../assets/Clothing/ao_khoac_nam/${prop.image}`}
+                src={`../../../assets/Clothing/ao_khoac_nam/AKN1.jpg`}
             />}
         >
             <Flex direction="column" justify='space-between'>
@@ -20,9 +21,9 @@ const Product = (prop) => {
                         style={{ margin: 0, transition: 'color 0.3s' }}
                         className="hoverable-title"
                     >
-                        Europe Street beat
+                        {prop.name}
                     </Typography.Title>
-                    <Typography.Text style={{ margin: 0 }}>$20</Typography.Text>
+                    <Typography.Text style={{ margin: 0 }}>{prop.price}</Typography.Text>
                 </Flex>
                 <Button
                     icon={<ShoppingCartOutlined />} />
