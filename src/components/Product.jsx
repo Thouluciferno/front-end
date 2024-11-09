@@ -8,7 +8,7 @@ const Product = (prop) => {
     const navigate = useNavigate();
 
     const handleCardClick = () => {
-        navigate(`/products/${prop.id}`);
+        navigate(`/productDetail/${prop.id}`);
     };
 
 

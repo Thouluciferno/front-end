@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Categories, Product, TopCategories, Pagination } from '../components/index';
+import { Categories, Product, Pagination } from '../components/index';
 import { Layout, Space, Spin, Alert } from 'antd';
-import PropTypes from 'prop-types';
-import axios from '../utils/axiosConfig';
+
+import productApi from '../services/api/productApi';
 import './ProductPage.css';
 
 const { Content } = Layout;
@@ -10,28 +10,32 @@ const { Content } = Layout;
 const ProductPage = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [selectedCategory, setSelectedCategory] = useState(null);
+    const [selectedCategories, setSelectedCategories] = useState([]);
     const [error, setError] = useState(null);
     const pageSize = 4;
     const [currentPage, setCurrentPage] = useState(1);
 
 
+    // fetch data rồi check filter dựa trên id của category
     useEffect(() => {
         const fetchProducts = async () => {
             try {
                 setLoading(true);
                 setError(null);
 
-                console.log(selectedCategory);
+                const response = await productApi.getAll();
 
-                const endpoint = selectedCategory
-                    ? `/products?id=${selectedCategory}`
-                    : '/products';
-                const response = await axios.get(endpoint);
+                // console.log(response);
+
                 const transformedProducts = response.data.map(product => ({
                     ...product,
                 }));
-                setProducts(transformedProducts);
+
+                const filteredProducts = selectedCategories.length > 0
+                    ? transformedProducts.filter(product => selectedCategories.includes(product.category.id))
+                    : transformedProducts;
+
+                setProducts(filteredProducts);
             } catch (error) {
                 setError('Failed to fetch products. Please try again later.');
                 console.error('Error fetching products:', error);
@@ -42,7 +46,7 @@ const ProductPage = () => {
 
         fetchProducts();
         setCurrentPage(1);
-    }, [selectedCategory]);
+    }, [selectedCategories]);
 
     const startIndex = (currentPage - 1) * pageSize;
     const productsToShow = products.slice(startIndex, startIndex + pageSize);
@@ -52,18 +56,22 @@ const ProductPage = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    const handleCategorySelect = (category) => {
-
-
-        setSelectedCategory(category);
+    const handleCategorySelect = (categoryId) => {
+        console.log('Category ID selected:', categoryId);
+        setSelectedCategories(prevSelected => {
+            if (prevSelected.includes(categoryId)) {
+                // If already selected, remove it
+                return prevSelected.filter(id => id !== categoryId);
+            } else {
+                // If not selected, add it
+                return [...prevSelected, categoryId];
+            }
+        });
     };
 
     return (
         <Layout className='layout' style={{ backgroundColor: "white", marginTop: "24px" }}>
-            <Categories
-                selectedCategory={selectedCategory}
-                onCategorySelect={handleCategorySelect}
-            />
+            <Categories onCategorySelect={handleCategorySelect} />
             <Layout className="site-layout">
                 <Content style={{ padding: '0 24px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
                     {error && (

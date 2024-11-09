@@ -10,13 +10,15 @@ const { Title } = Typography;
 
 
 
-const MainProduct = () => {
+const MainProduct = ({ product }) => {
+
+    console.log(product);
     return (
         <Space align="start" size={32}>
             <Image src={image} style={{ width: '400px', height: '400px' }} />
             <div style={{ display: 'flex', flexDirection: 'column', marginTop: '10px', gap: '8px' }}>
-                <Title level={4} style={{ fontWeight: 'bold' }}>Áo polo Nam thể thao sport Unibody melange không đường may TOKYOLIFE 40000935</Title>
-                <Title level={3}>$50.00</Title>
+                <Title level={4} style={{ fontWeight: 'bold' }}>{product.name}</Title>
+                <Title level={3}>${product.price}</Title>
                 <InputNumber min={1} max={10} defaultValue={1} style={{ width: '168px' }} />
                 <CurrentAddress />
                 <div style={{ marginTop: '16px', display: 'flex', gap: '16px' }}>

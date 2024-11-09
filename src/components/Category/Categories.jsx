@@ -7,9 +7,8 @@ import PropTypes from 'prop-types';
 
 const { Sider } = Layout;
 
-const Categories = ({ onCategorySelect, onRatingSelect }) => {
+const Categories = ({ onCategorySelect }) => {
     const [categories, setCategories] = useState([]);
-    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -18,19 +17,21 @@ const Categories = ({ onCategorySelect, onRatingSelect }) => {
                 // Filter only active categories
                 const activeCategories = response.data.filter(category => category.status);
                 setCategories(activeCategories);
-                setLoading(false);
             } catch (error) {
                 console.error('Error fetching categories:', error);
-                setLoading(false);
             }
         };
 
         fetchCategories();
     }, []);
 
-    console.log(categories);
+    // console.log(categories.map(category => category.name));
 
     const handleRatingChange = (value) => {
+    };
+
+    const handleCheckboxChange = (value) => {
+        onCategorySelect(value);
     };
 
     const handleClearAll = () => {
@@ -40,13 +41,13 @@ const Categories = ({ onCategorySelect, onRatingSelect }) => {
     return (
         <Sider className='categories' width={250} style={{ marginTop: "24px", backgroundColor: "white" }}>
             <Menu theme="light" mode="inline" defaultOpenKeys={['sub1']} >
-                <Menu.SubMenu key="categories" title="Categories">
+                <Menu.SubMenu key="categories" title="Categories"  >
                     <Checkbox.Group
                         style={{ width: '100%' }}
                     >
                         {categories.map(category => (
                             <Menu.Item key={category.id}>
-                                <Checkbox value={category.id}>
+                                <Checkbox value={category.id} onChange={(e) => handleCheckboxChange(e.target.value)}>
                                     {category.name}
                                 </Checkbox>
                             </Menu.Item>
@@ -77,6 +78,10 @@ const Categories = ({ onCategorySelect, onRatingSelect }) => {
         </Sider>
     );
 }
+
+Categories.propTypes = {
+    onCategorySelect: PropTypes.func
+};
 
 
 export default Categories;
