@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Form, Input, Button, Typography, Space, Card, message } from 'antd';
 import { GoogleOutlined, LockOutlined, UserOutlined, MailOutlined } from '@ant-design/icons';
 import axios from '../utils/axiosConfig';
+import { userApiWithAuth } from '../services/api/userApi';
+
 
 
 const { Title } = Typography;
@@ -22,12 +24,11 @@ const LoginPage = () => {
 
     const handleSubmit = async () => {
         try {
-            const response = await axios.post('/auth/token', { username, password });
-            console.log(response.data.result.token);
+            const response = await userApiWithAuth.login({ username, password });
             const token = response.data.result.token;
             localStorage.setItem('token', token);
             message.success('Login successful');
-            navigate('/'); // Navigate to the homepage
+            navigate('/');
         } catch (error) {
             console.error('Login error:', error);
             message.error('Login failed. Please check your credentials.');

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Layout, Menu, Avatar, Select, Upload, message, Typography, Form, Input, Button, Card, Row, Col, DatePicker, Spin } from 'antd';
-import axios from '../../../utils/axiosConfig';
-import moment from 'moment';
+import { message, Typography, Form, Input, Button, Card, Row, Col, Spin } from 'antd';
+
+import { userApiWithAuth } from '../../../services/api/userApi';
+
 
 const { Text } = Typography;
 const { Item: FormItem } = Form;
@@ -23,12 +24,8 @@ const UserProfile = () => {
     const fetchUserData = async () => {
         setLoading(true);
         try {
-            const token = localStorage.getItem('token');
-            const response = await axios.get('/users/myInfo', {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
+            const response = await userApiWithAuth.myInfo();
+
 
             const { result } = response.data;
 
@@ -56,20 +53,13 @@ const UserProfile = () => {
     const handleSubmit = async (values) => {
         setLoading(true);
         try {
-            const token = localStorage.getItem('token');
-
-            console.log(values);
             const formData = {
                 username: values.username,
                 numberPhone: values.numberPhone,
                 email: values.email
             };
 
-            await axios.put(`/users`, formData, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
+            await userApiWithAuth.updateProfile(formData);
             message.success('Profile updated successfully');
             await fetchUserData();
         } catch (error) {

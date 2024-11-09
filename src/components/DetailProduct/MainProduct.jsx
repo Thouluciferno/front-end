@@ -2,7 +2,7 @@ import React from 'react'
 import { Button, Image, InputNumber, Space, Typography } from 'antd';
 import { ShoppingCartOutlined } from '@ant-design/icons';
 
-import image from "../../assets/chair/Image.png";
+// import image from "../../assets/chair/Image.png";
 
 import CurrentAddress from './CurrentAddress';
 
@@ -12,10 +12,15 @@ const { Title } = Typography;
 
 const MainProduct = ({ product }) => {
 
-    console.log(product);
+    console.log(`../../assets/${product.image}`);
     return (
         <Space align="start" size={32}>
-            <Image src={image} style={{ width: '400px', height: '400px' }} />
+            <Image
+                alt={product.name}
+
+                src={require(`../../assets/${product.image}`)}
+                style={{ width: '400px', height: '400px', objectFit: 'contain' }}
+            />
             <div style={{ display: 'flex', flexDirection: 'column', marginTop: '10px', gap: '8px' }}>
                 <Title level={4} style={{ fontWeight: 'bold' }}>{product.name}</Title>
                 <Title level={3}>${product.price}</Title>

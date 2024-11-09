@@ -27,5 +27,4 @@ import NotFoundPage from "./NotFoundPage";
 export {
     HomePage, ProductPage, ProfilePage, CheckoutPage, CartPage, LoginPage, RegisterPage, AdminPage, DetailProduct,
     CategoryPage, ProductAdminPage, UserPage, SecurityPage, ShippingPage, OrderPage, VoucherPage, NotFoundPage
-
 };

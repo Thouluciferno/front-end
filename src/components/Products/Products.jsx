@@ -1,48 +1,75 @@
-import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { Row } from 'antd';
-import { Flex } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Row, Col, Spin } from 'antd';
 import Product from './Product/Product';
-import Image from '../../assets/chair/Image.png';
-import Image1 from '../../assets/chair/Image1.png';
-import Image2 from '../../assets/chair/Image2.png';
-import Image3 from '../../assets/chair/Image3.png';
+
+import productApi from '../../services/api/productApi';
 
 const Products = () => {
-    const { id } = useParams();
     const navigate = useNavigate();
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    const products = [
-        { id: 1, image: Image },
-        { id: 2, image: Image1 },
-        { id: 3, image: Image2 },
-        { id: 4, image: Image3 },
-    ];
+    // Lấy dữ liệu từ API
+    const fetchProducts = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+
+            const response = await productApi.getAll();
+
+        } catch (error) {
+            setError('Failed to fetch products. Please try again later.');
+            console.error('Error fetching products:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchProducts();
+    }, [selectedCategories]);
 
     const handleProductClick = (productId) => {
         navigate(`/products/${productId}`);
     };
 
-    // If ID is provided, show single product
-    if (id) {
-        const product = products.find(p => p.id === parseInt(id));
+    // Hiển thị loading spinner nếu đang tải dữ liệu
+    if (loading) {
         return (
-            <Flex justify="center">
-                <Product image={product?.image} />
-            </Flex>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <Spin size="large" />
+            </div>
         );
     }
 
-    // Otherwise show all products
+    // Hiển thị thông báo lỗi nếu có lỗi
+    if (error) {
+        return <div style={{ textAlign: 'center', marginTop: '20px', color: 'red' }}>{error}</div>;
+    }
+
+
+    // Hiển thị tất cả các sản phẩm
     return (
-        <Row justify="space-around" gutter={[16, 16]} className="products">
-            {products.map(product => (
-                <Flex key={product.id} justify="center" onClick={() => handleProductClick(product.id)}>
-                    <Product image={product.image} />
-                </Flex>
+        <Row justify="center" gutter={[16, 16]} className="products">
+            {products.map((product) => (
+                <Col
+                    key={product.id}
+                    xs={24}
+                    sm={12}
+                    md={6}
+                    onClick={() => handleProductClick(product.id)}
+                    style={{ cursor: 'pointer' }}
+                >
+                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                        {/* Sử dụng require để lấy hình ảnh từ assets */}
+                        <Product image={require(`../../assets/${product.image}`)} />
+                    </div>
+                </Col>
             ))}
         </Row>
     );
-}
+};
 
 export default Products;
