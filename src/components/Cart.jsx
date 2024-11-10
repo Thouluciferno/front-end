@@ -5,6 +5,7 @@ import "./Cart.css";
 const { Text } = Typography;
 
 const Cart = ({ item, onUpdateQuantity, onDelete }) => {
+    console.log(item.product);
     return (
         <Card className="cart-item">
             <Row gutter={[16, 16]} align="middle">
@@ -12,7 +13,10 @@ const Cart = ({ item, onUpdateQuantity, onDelete }) => {
                     <Checkbox checked={item.checked} />
                 </Col>
                 <Col xs={24} sm={8} md={6} lg={4}>
-                    <Image src={item.image} alt={item.name} />
+                    <Image
+                        // require
+                        // src={require(`../assets/${item.image}`)}
+                        alt={item.name} />
                 </Col>
                 <Col xs={24} sm={8} md={8} lg={6}>
                     <Text>{item.name}</Text>

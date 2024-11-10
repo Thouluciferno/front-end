@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Typography, Button } from 'antd'; // Import Typography
+import { Card, Typography, Image } from 'antd'; // Import Typography
 import { Flex } from 'antd';
 import './Category.css';
 
@@ -8,7 +8,12 @@ const Category = (props) => {
         <Card
             hoverable
             style={{ width: 320, marginTop: "24px", position: "relative" }}
-            cover={<img alt="example" src={props.image} />}
+            cover={<Image
+                alt={props.name}
+                src={require(`../../../assets/${props.image}`)}
+                preview={false}
+                style={{ objectFit: 'contain', height: '200px' }}
+            />}
         >
             <div className="category-overlay">
                 <div className="overlay-content">
@@ -18,9 +23,9 @@ const Category = (props) => {
                             style={{ margin: 0, transition: 'color 0.3s', color: "white" }}
                             className="hoverable-title"
                         >
-                            Europe Street beat
+                            {props.name}
                         </Typography.Title>
-                        <Typography.Text style={{ margin: 0, color: "white" }}>3,584 Products</Typography.Text>
+                        <Typography.Text style={{ margin: 0, color: "white" }}>{props.quantity} Products</Typography.Text>
                     </Flex>
                 </div>
             </div>

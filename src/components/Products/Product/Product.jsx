@@ -1,6 +1,5 @@
 import React from 'react';
-import { Flex, Card, Typography, Button } from 'antd'; // Import Typography
-import Image from '../../../assets/chair/Image.png';
+import { Flex, Card, Typography, Button, Image } from 'antd'; // Import Typography
 import { ShoppingCartOutlined } from '@ant-design/icons';
 import "./Product.css";
 
@@ -9,9 +8,11 @@ const Product = (prop) => {
         <Card
             hoverable
             style={{ width: 320, marginTop: "24px" }}
-            cover={<img alt="example"
-                // src={`../../../assets/Clothing/ao_khoac_nam/${prop.image}`}
-                src={`../../../assets/Clothing/ao_khoac_nam/AKN1.jpg`}
+            cover={<Image
+                alt={prop.name}
+                src={require(`../../../assets/${prop.image}`)}
+                preview={false}
+                style={{ objectFit: 'contain', height: '200px' }}
             />}
         >
             <Flex direction="column" justify='space-between'>
@@ -23,7 +24,7 @@ const Product = (prop) => {
                     >
                         {prop.name}
                     </Typography.Title>
-                    <Typography.Text style={{ margin: 0 }}>{prop.price}</Typography.Text>
+                    <Typography.Text style={{ margin: 0 }}>${prop.price}</Typography.Text>
                 </Flex>
                 <Button
                     icon={<ShoppingCartOutlined />} />

@@ -1,15 +1,12 @@
-import React, { useState } from 'react';
-import { Typography, Card, InputNumber, Button, Space, Checkbox } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Typography, Card, Button, Space, Checkbox, Flex } from 'antd';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate instead of useHistory
-
-
 import "./CartPage.css";
 
-import { Flex } from 'antd';
+import { Cart, TopCategories } from "../components/index";
 
-import { Cart, Products, TopCategories } from "../components/index";
+import cartApi from '../services/api/cartApi';
 import { Heading } from '../layouts/index';
-
 
 const { Title, Text } = Typography;
 
@@ -18,26 +15,23 @@ const CartPage = () => {
 
 
     // Dummy data for the cart items
-    const [cartItems, setCartItems] = useState([
-        {
-            key: '1',
-            name: 'Product 1',
-            image: 'https://via.placeholder.com/80', // Smaller image size
-            price: 10,
-            quantity: 2,
-            total: 20,
-            checked: false,
-        },
-        {
-            key: '2',
-            name: 'Product 2',
-            image: 'https://via.placeholder.com/80', // Smaller image size
-            price: 15,
-            quantity: 1,
-            total: 15,
-            checked: false,
-        },
-    ]);
+    const [cartItems, setCartItems] = useState([]);
+
+    useEffect(() => {
+        const fetchCartItems = async () => {
+            try {
+                const response = await cartApi.myCart();
+                const cartItemsData = response.data;
+                console.log("Cart Items:", cartItemsData);
+                console.log("Cart product:", cartItemsData[0].product);
+                setCartItems(cartItemsData);
+            } catch (error) {
+                console.error("Error fetching cart items:", error);
+            }
+        };
+
+        fetchCartItems();
+    }, []);
 
     // Function to update quantity
     const onUpdateQuantity = (key, value) => {
@@ -68,12 +62,9 @@ const CartPage = () => {
 
     // Function to proceed to payment
     const handlePayment = () => {
-        // Your payment logic here
         console.log("Total Amount:", totalAmount);
-        // For example, you can redirect to a payment page
 
-        // Redirect to payment page
-        navigate('/checkout'); // Assuming '/payment' is the route for the payment page
+        navigate('/checkout');
 
 
     };

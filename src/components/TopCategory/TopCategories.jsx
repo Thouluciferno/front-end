@@ -1,34 +1,86 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Carousel, Flex } from 'antd';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Category from './Category/Category';
+
 import './TopCategories.css';
-import Image from '../../assets/chair/Image.png';
-import Image1 from '../../assets/chair/Image1.png';
-import Image2 from '../../assets/chair/Image2.png';
-import Image3 from '../../assets/chair/Image3.png';
-import Image4 from '../../assets/chair/Image2.png';
-import Image5 from '../../assets/chair/Image1.png';
-import Image6 from '../../assets/chair/Image2.png';
-import Image7 from '../../assets/chair/Image3.png';
+
+import productApi from '../../services/api/productApi';
+
 
 const TopCategories = () => {
+
+    const navigate = useNavigate();
+    const [products, setProducts] = useState([]);
+    const [products2, setProducts2] = useState([]);
+
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    // Lấy dữ liệu từ API
+    const fetchProducts = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+
+            const response = await productApi.top4();
+
+            const response2 = await productApi.top4later();
+
+            console.log(response);
+
+            console.log(response2);
+
+
+            if (response.status === 200) {
+                setProducts(response.data);
+                setProducts2(response2.data);
+            }
+
+        } catch (error) {
+            setError('Failed to fetch products. Please try again later.');
+            console.error('Error fetching products:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+
+
+
+    useEffect(() => {
+        fetchProducts();
+    }, []);
+
+    const handleProductClick = (productId) => {
+        navigate(`/ProductDetail/${productId}`);
+    };
     return (
         <Carousel autoplay className='categories-carousel' dots={false}>
             <div className="slide">
                 <Flex className='categories' justify='space-between'>
-                    <Link to="/products/1"><Category image={Image} /></Link>
-                    <Link to="/products/2"><Category image={Image1} /></Link>
-                    <Link to="/products/3"><Category image={Image2} /></Link>
-                    <Link to="/products/4"><Category image={Image3} /></Link>
+                    {products.map((product) => (
+                        <Category
+                            key={product.id}
+                            image={product.image}
+                            name={product.name}
+                            quantity={product.quantity}
+                            onClick={() => handleProductClick(product.id)}
+                        />
+                    ))}
                 </Flex>
             </div>
             <div className="slide">
                 <Flex className='categories' justify='space-between'>
-                    <Link to="/products/5"><Category image={Image1} /></Link>
-                    <Link to="/products/6"><Category image={Image5} /></Link>
-                    <Link to="/products/7"><Category image={Image7} /></Link>
-                    <Link to="/products/8"><Category image={Image6} /></Link>
+                    {products2.map((product) => (
+                        <Category
+                            key={product.id}
+                            image={product.image}
+                            name={product.name}
+                            quantity={product.quantity}
+                            onClick={() => handleProductClick(product.id)}
+                        />
+                    ))}
                 </Flex>
             </div>
         </Carousel>

@@ -11,6 +11,9 @@ const productApi = {
 
     create: (productData) => axios.post('/products', productData),
 
+    top4: () => axios.get('/products/top4'),
+
+    top4later: () => axios.get('/products/top4later'),
 
 
 

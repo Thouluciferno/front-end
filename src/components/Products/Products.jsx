@@ -17,7 +17,11 @@ const Products = () => {
             setLoading(true);
             setError(null);
 
-            const response = await productApi.getAll();
+            const response = await productApi.top4();
+
+            if (response.status === 200) {
+                setProducts(response.data);
+            }
 
         } catch (error) {
             setError('Failed to fetch products. Please try again later.');
@@ -29,10 +33,10 @@ const Products = () => {
 
     useEffect(() => {
         fetchProducts();
-    }, [selectedCategories]);
+    }, []);
 
     const handleProductClick = (productId) => {
-        navigate(`/products/${productId}`);
+        navigate(`/ProductDetail/${productId}`);
     };
 
     // Hiển thị loading spinner nếu đang tải dữ liệu
@@ -63,8 +67,12 @@ const Products = () => {
                     style={{ cursor: 'pointer' }}
                 >
                     <div style={{ display: 'flex', justifyContent: 'center' }}>
-                        {/* Sử dụng require để lấy hình ảnh từ assets */}
-                        <Product image={require(`../../assets/${product.image}`)} />
+                        <Product
+                            image={product.image}
+                            name={product.name}
+                            price={product.price}
+                            id={product.id}
+                        />
                     </div>
                 </Col>
             ))}
