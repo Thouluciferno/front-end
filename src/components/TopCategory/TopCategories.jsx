@@ -27,9 +27,7 @@ const TopCategories = () => {
 
             const response2 = await productApi.top4later();
 
-            console.log(response);
 
-            console.log(response2);
 
 
             if (response.status === 200) {

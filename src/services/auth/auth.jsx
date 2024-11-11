@@ -8,7 +8,6 @@ const isAuthenticated = () => {
         const decodedToken = jwtDecode(token);
         const currentTime = Date.now() / 1000;
 
-        console.log(decodedToken);
         return decodedToken.exp > currentTime;
     } catch (error) {
         return false;

@@ -16,11 +16,25 @@ const cartApi = {
         return axios.get('/carts/myCart');
     },
 
-    addProductToCart: async (cartId, productId) => {
+    addToCart: async (productId) => {
         setAuthHeader();
-        return axios.post(`/carts/${cartId}/products/${productId}`);
+        return axios.post(`/carts/${productId}`);
     },
 
+    removeFromCart: async (productId) => {
+        setAuthHeader();
+        return axios.delete(`/carts/${productId}`);
+    },
+
+    clearCart: async () => {
+        setAuthHeader();
+        return axios.delete('/carts');
+    },
+
+    updateQuantity: async (productId, quantity) => {
+        setAuthHeader();
+        return axios.put(`/carts/${productId}`, { quantity });
+    },
 
 };
 

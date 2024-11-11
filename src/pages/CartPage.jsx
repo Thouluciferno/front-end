@@ -14,17 +14,22 @@ const CartPage = () => {
     const navigate = useNavigate(); // Initialize useNavigate
 
 
-    // Dummy data for the cart items
     const [cartItems, setCartItems] = useState([]);
+    const [totalAmount, setTotalAmount] = useState(0);
 
     useEffect(() => {
         const fetchCartItems = async () => {
             try {
                 const response = await cartApi.myCart();
+
                 const cartItemsData = response.data;
-                console.log("Cart Items:", cartItemsData);
-                console.log("Cart product:", cartItemsData[0].product);
+
                 setCartItems(cartItemsData);
+
+                console.log("Cart Items:", cartItemsData);
+
+                // Calculate total amount
+
             } catch (error) {
                 console.error("Error fetching cart items:", error);
             }
@@ -35,12 +40,21 @@ const CartPage = () => {
 
     // Function to update quantity
     const onUpdateQuantity = (key, value) => {
-        setCartItems(prevItems =>
-            prevItems.map(item =>
-                item.key === key ? { ...item, quantity: value, total: value * item.price } : item
-            )
-        );
+
+        //    addToCart
+        cartApi.updateQuantity(key, value)
+            .then((response) => {
+                console.log(response);
+                setCartItems(prevItems => prevItems.map(item => item.id === key ? { ...item, quantity: value } : item));
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+
+
+
     };
+
 
     // Function to delete item
     const onDelete = (key) => {
@@ -55,10 +69,10 @@ const CartPage = () => {
         setCartItems(prevItems =>
             prevItems.map(item => ({ ...item, checked }))
         );
+
+        setTotalAmount(checked ? cartItems.reduce((total, item) => total + (item.product.price * item.quantity), 0) : 0);
     };
 
-    // Calculate total amount
-    const totalAmount = cartItems.reduce((acc, item) => (item.checked ? acc + item.total : acc), 0);
 
     // Function to proceed to payment
     const handlePayment = () => {
@@ -68,6 +82,23 @@ const CartPage = () => {
 
 
     };
+
+    const onToggleSelect = (key, checked) => {
+        console.log(key, checked);
+
+        setCartItems(prevItems => {
+            const updatedItems = prevItems.map(item =>
+                item.id === key ? { ...item, checked } : item
+            );
+
+            // Calculate total amount based on selected items
+            const newTotalAmount = updatedItems.reduce((total, item) => total + (item.checked ? item.product.price * item.quantity : 0), 0);
+            setTotalAmount(newTotalAmount);
+
+            return updatedItems;
+        });
+    };
+
 
     return (
         <div className="cart-page-container">
@@ -80,8 +111,13 @@ const CartPage = () => {
                     </Flex>
                 </Card>
                 {cartItems.map(item => (
-                    <Card key={item.key} className="cart-item-card">
-                        <Cart item={item} onUpdateQuantity={onUpdateQuantity} onDelete={() => onDelete(item.key)} />
+                    <Card key={item.id} className="cart-item-card">
+                        <Cart
+                            item={item}
+                            onUpdateQuantity={onUpdateQuantity}
+                            onDelete={() => onDelete(item.id)}
+                            onToggleSelect={onToggleSelect}
+                        />
                     </Card>
                 ))}
             </Flex>
@@ -92,9 +128,13 @@ const CartPage = () => {
                         Select All
                     </Checkbox>
                     <Space>
-                        <Flex justify="space-between" align="center" gap={32}>
-                            <Text strong>Total: ${totalAmount}</Text>
-                            <Button type="primary" onClick={handlePayment} style={{ width: "168px", height: "40px", backgroundColor: 'orange' }}>Payment</Button>
+                        <Flex justify="space-between" align="center" gap={16}>
+                            <Text style={{ fontSize: "20px", fontWeight: "bold" }}>Tổng:</Text>
+                            <Text strong
+                                style={{ fontSize: "20px", fontWeight: "bold", color: "red" }}
+                            > ₫{totalAmount}</Text>
+
+                            <Button type="primary" onClick={handlePayment} style={{ width: "168px", height: "40px", backgroundColor: 'orange' }}>Thanh Toán</Button>
                         </Flex>
                     </Space>
                 </Flex>
