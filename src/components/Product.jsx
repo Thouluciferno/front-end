@@ -1,8 +1,12 @@
 import React from 'react';
-import { Flex, Card, Typography, Button, Image } from 'antd';
+import { Flex, Card, Typography, Button, Image, message } from 'antd';
 import { ShoppingCartOutlined } from '@ant-design/icons';
+
 import { useNavigate } from 'react-router-dom';
 import "./Product.css";
+
+import cartApi from "../services/api/cartApi";
+
 
 const Product = (prop) => {
     const navigate = useNavigate();
@@ -11,6 +15,18 @@ const Product = (prop) => {
         navigate(`/productDetail/${prop.id}`);
     };
 
+    const handleButtonClick = async () => {
+        try {
+
+            const response = await cartApi.addToCart(prop.id, 1);
+
+            console.log(response);
+            message.success('Product added to cart successfully!');
+        } catch (error) {
+            console.error('Failed to add product to cart:', error);
+            message.error('Failed to add product to cart. Please try again.');
+        }
+    };
 
     return (
         <Card
@@ -21,9 +37,9 @@ const Product = (prop) => {
                     src={require(`../assets/${prop.image}`)}
                     preview={false}
                     style={{ width: '250px', height: '250px', objectFit: 'contain' }}
+                    onClick={handleCardClick}
                 />
             }
-            onClick={handleCardClick}
         >
             <Flex direction="horizontal" justify="space-between"  >
                 <Flex vertical justify="space-between" >
@@ -35,6 +51,7 @@ const Product = (prop) => {
                         {prop.name}
                     </Typography.Title>
                     <Typography.Text >
+                        {/* just show integer */}
                         ${prop.price}
                     </Typography.Text>
 
@@ -42,7 +59,8 @@ const Product = (prop) => {
                 <Button
                     type="primary"
                     icon={<ShoppingCartOutlined />}
-                    onClick={(e) => e.stopPropagation()} // Prevents card click when button is clicked
+                    onClick={handleButtonClick}
+                    key={prop.id}
                 />
             </Flex>
         </Card>

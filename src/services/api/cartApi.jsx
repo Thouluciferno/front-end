@@ -16,9 +16,9 @@ const cartApi = {
         return axios.get('/carts/myCart');
     },
 
-    addToCart: async (productId) => {
+    addToCart: async (productId, quantity) => {
         setAuthHeader();
-        return axios.post(`/carts/${productId}`);
+        return axios.post(`/carts/create`, { productId, quantity });
     },
 
     removeFromCart: async (productId) => {

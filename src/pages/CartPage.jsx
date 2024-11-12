@@ -55,12 +55,27 @@ const CartPage = () => {
 
     };
 
+    useEffect(() => {
+        // Calculate total amount
+        const newTotalAmount = cartItems.reduce((total, item) => total + (item.checked ? item.product.price * item.quantity : 0), 0);
+        setTotalAmount(newTotalAmount);
+    }, [cartItems]);
+
 
     // Function to delete item
     const onDelete = (key) => {
-        setCartItems(prevItems =>
-            prevItems.filter(item => item.key !== key)
-        );
+
+        console.log("Delete Item:", key);
+
+        // deleteFromCart
+        cartApi.removeFromCart(key)
+            .then((response) => {
+                console.log(response);
+                setCartItems(prevItems => prevItems.filter(item => item.id !== key));
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     };
 
     // Function to handle "Select All" checkbox

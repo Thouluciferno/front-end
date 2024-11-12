@@ -35,11 +35,13 @@ function AppContent() {
           });
 
 
+
           if (response.data.result.valid) {
             setIsAuthenticated(true);
           } else {
 
             localStorage.removeItem('token');
+            delete axios.defaults.headers.common['Authorization'];
             setIsAuthenticated(false);
           }
         } catch (error) {
@@ -55,9 +57,9 @@ function AppContent() {
 
     checkAuth();
 
-    const interval = setInterval(checkAuth, 60000);
+    // const interval = setInterval(checkAuth, 60000);
 
-    return () => clearInterval(interval);
+    // return () => clearInterval(interval);
   }, []);
 
   return (
