@@ -67,12 +67,12 @@ function AppContent() {
       {!isAdminRoute && <HeaderNav isAuthenticated={isAuthenticated} />}
       <Content style={{ padding: '0 50px' }}>
         <Routes>
+          {/* Public routes */}
           <Route path="/" element={<HomePage />} />
           <Route path="/products" element={<ProductPage />} />
           <Route path="/products/:id" element={<ProductPage />} />
           <Route path="/productDetail/:id" element={<DetailProduct />} />
 
-          {/* Conditional rendering for login and register routes */}
           {!isAuthenticated && (
             <>
               <Route path="/login" element={<LoginPage />} />

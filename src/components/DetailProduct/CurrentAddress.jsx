@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Button, Card, Space, Typography, Modal, Input, Select, Form } from 'antd';
+import { Button, Card, Space, Typography, Modal, Input, Select, Form, Flex } from 'antd';
 
-import userApi from '../../services/api/userApi';
+import addressApi from '../../services/api/addressApi';
 
 const { Text, Title } = Typography;
 const { Option } = Select;
@@ -38,16 +38,18 @@ const CurrentAddress = () => {
     };
 
     return (
-        <Card style={{ width: '100%', padding: '16px', marginTop: '24px' }}>
+        <Card style={{ width: '100%', padding: '16px', marginTop: '16px' }}>
             <Title level={5} style={{ fontWeight: '500' }}>
                 Vận Chuyển
             </Title>
-            <Space size="large" align="center" style={{ marginBottom: '16px' }}>
-                <Text strong>
-                    {currentAddress.name}, {currentAddress.phoneNumber}
-                </Text>
-                <Text>{currentAddress.detailedAddress}</Text>
-            </Space>
+            <Flex>
+                <Space size="large" align="center" style={{ marginBottom: '16px' }}>
+                    <Text strong>
+                        {currentAddress.name}, {currentAddress.phoneNumber}
+                    </Text>
+                    <Text>{currentAddress.detailedAddress}</Text>
+                </Space>
+            </Flex>
             <Button type="primary" onClick={() => showModal('edit')}>
                 Edit Address
             </Button>
@@ -65,7 +67,7 @@ const CurrentAddress = () => {
                     initialValues={currentAddress}
                     onValuesChange={handleAddressChange}
                 >
-                    <Form.Item label="Họ và tên" name="name">
+                    <Form.Item label="Họ và tên" name="name" >
                         <Input placeholder="Enter your name" />
                     </Form.Item>
 

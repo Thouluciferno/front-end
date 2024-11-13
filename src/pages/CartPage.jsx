@@ -26,7 +26,6 @@ const CartPage = () => {
 
                 setCartItems(cartItemsData);
 
-                console.log("Cart Items:", cartItemsData);
 
                 // Calculate total amount
 
@@ -120,11 +119,7 @@ const CartPage = () => {
             <Title level={2}>Shopping Cart</Title>
 
             <Flex className="cart-items-container" vertical justify="space-between" gap={16} >
-                <Card className="cart-item-card">
-                    <Flex align="middle" justify="space-between">
-                        <Checkbox onChange={handleSelectAll}>Select All</Checkbox>
-                    </Flex>
-                </Card>
+
                 {cartItems.map(item => (
                     <Card key={item.id} className="cart-item-card">
                         <Cart

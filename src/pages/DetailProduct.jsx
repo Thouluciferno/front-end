@@ -17,7 +17,6 @@ const DetailProduct = () => {
             try {
                 const data = await productApi.getById(productId);
 
-                console.log(data);
 
                 setProduct(data.data);
             } catch (err) {

@@ -27,6 +27,7 @@ const TopCategories = () => {
 
             const response2 = await productApi.top4later();
 
+            console.log(response);
 
 
 
@@ -43,27 +44,22 @@ const TopCategories = () => {
         }
     };
 
-
-
-
     useEffect(() => {
         fetchProducts();
     }, []);
 
-    const handleProductClick = (productId) => {
-        navigate(`/ProductDetail/${productId}`);
-    };
+
+
     return (
         <Carousel autoplay className='categories-carousel' dots={false}>
             <div className="slide">
                 <Flex className='categories' justify='space-between'>
                     {products.map((product) => (
                         <Category
-                            key={product.id}
+                            id={product.id}
                             image={product.image}
                             name={product.name}
                             quantity={product.quantity}
-                            onClick={() => handleProductClick(product.id)}
                         />
                     ))}
                 </Flex>
@@ -72,11 +68,10 @@ const TopCategories = () => {
                 <Flex className='categories' justify='space-between'>
                     {products2.map((product) => (
                         <Category
-                            key={product.id}
+                            id={product.id}
                             image={product.image}
                             name={product.name}
                             quantity={product.quantity}
-                            onClick={() => handleProductClick(product.id)}
                         />
                     ))}
                 </Flex>
