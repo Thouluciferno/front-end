@@ -16,12 +16,9 @@ const addressApi = {
     },
     myAddresses: async () => {
         setAuthHeader();
-        return axios.get('/addresses/myAddresses');
+        return axios.get('/address/myAddress');
     },
-    update: async (addressId, address) => {
-        setAuthHeader();
-        return axios.put(`/addresses/${addressId}`, address);
-    },
+
 };
 
 export default addressApi;

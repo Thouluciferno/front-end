@@ -1,11 +1,16 @@
 import React from 'react';
-import { Flex, Card, Typography, Button, Image, message } from 'antd';
+import { Flex, Card, Button, Image, message } from 'antd';
 import { ShoppingCartOutlined } from '@ant-design/icons';
 
 import { useNavigate } from 'react-router-dom';
 import "./Product.css";
 
 import cartApi from "../services/api/cartApi";
+
+import { Typography } from 'antd';
+
+const { Title } = Typography;
+
 
 
 const Product = (prop) => {
@@ -43,17 +48,21 @@ const Product = (prop) => {
         >
             <Flex direction="horizontal" justify="space-between"  >
                 <Flex vertical justify="space-between" >
-                    <Typography.Title
+                    <Title
                         level={5}
-                        style={{ margin: 0, transition: 'color 0.3s' }}
+                        style={{ margin: 0, transition: 'color 0.3s', color: "#007580", cursor: "pointer", width: "180px" }}
                         className="hoverable-title"
+
                     >
                         {prop.name}
-                    </Typography.Title>
-                    <Typography.Text >
-                        {/* just show integer */}
+                    </Title>
+                    <Title
+                        level={5}
+                        style={{ margin: 0, padding: 0, transition: 'color 0.3s' }}
+
+                    >
                         ${prop.price}
-                    </Typography.Text>
+                    </Title>
 
                 </Flex>
                 <Button

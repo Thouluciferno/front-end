@@ -13,7 +13,6 @@ const { Title } = Typography;
 const MainProduct = ({ product }) => {
 
 
-    console.log(product);
 
     // add to cart and show message
     const handleAddToCart = async () => {
@@ -28,20 +27,16 @@ const MainProduct = ({ product }) => {
 
 
     return (
-        <Space align="start" size={32}>
-            {/* Hiển thị hình ảnh sản phẩm */}
+        <Space align="center" size={32} >
             <Image
                 alt={product.name}
                 src={require(`../../assets/${product.image}`)}
                 style={{ width: '400px', height: '400px', objectFit: 'contain' }}
             />
 
-            {/* Thông tin sản phẩm */}
             <div style={{ display: 'flex', flexDirection: 'column', marginTop: '10px' }}>
-                {/* Tên sản phẩm */}
                 <Title level={4} style={{ fontWeight: 'bold' }}>{product.name}</Title>
 
-                {/* Giá sản phẩm với nền màu */}
                 <Title
                     level={2}
                     style={{
@@ -55,16 +50,13 @@ const MainProduct = ({ product }) => {
                     ₫ {product.price}
                 </Title>
 
-                {/* Số lượng sản phẩm */}
                 <Flex align="center" gap={8}>
                     <Title level={5} style={{ fontWeight: 'bold', height: "48px" }} >Số lượng: </Title>
                     <InputNumber min={1} defaultValue={1} style={{ width: '168px' }} />
                 </Flex>
 
-                {/* Địa chỉ hiện tại */}
                 <CurrentAddress />
 
-                {/* Nút Thêm Vào Giỏ Hàng và Mua Ngay */}
                 <Space style={{ marginTop: '16px' }}>
                     <Button
                         type="primary"

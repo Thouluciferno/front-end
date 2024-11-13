@@ -3,7 +3,7 @@ import { Layout, Menu, Dropdown, Badge } from 'antd';
 import { Link } from 'react-router-dom';
 
 
-import { UserOutlined, ShoppingCartOutlined, NotificationOutlined, DownOutlined } from '@ant-design/icons';
+import { UserOutlined, ShoppingCartOutlined, NotificationOutlined } from '@ant-design/icons';
 import { BsGrid1X2Fill } from "react-icons/bs";
 import { MdOutlineProductionQuantityLimits } from "react-icons/md";
 import { BsFillArchiveFill } from "react-icons/bs";
