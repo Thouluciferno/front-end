@@ -2,7 +2,7 @@ import React from 'react';
 import { Layout, Row, Col } from 'antd';
 import { Hero, Background, TrackerRight, TrackerLeft } from '../components/Header';
 import { Feature, Products, TopCategories, Tab, Testimonial } from '../components/index'
-import { Heading, Footer } from '../layouts/index';
+import { Heading } from '../layouts/index';
 import "./HomePage.css";
 const { Content } = Layout;
 

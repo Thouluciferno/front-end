@@ -1,20 +1,15 @@
-import React from 'react'
+import React from 'react';
 import { Button, Image, InputNumber, Space, Typography, message, Flex } from 'antd';
 import { ShoppingCartOutlined } from '@ant-design/icons';
-
+import { useNavigate } from 'react-router-dom';
 import CurrentAddress from './CurrentAddress';
-
 import cartApi from '../../services/api/cartApi';
 
 const { Title } = Typography;
 
-
-
 const MainProduct = ({ product }) => {
+    const navigate = useNavigate();
 
-
-
-    // add to cart and show message
     const handleAddToCart = async () => {
         try {
             await cartApi.addToCart(product.id, 1);
@@ -25,9 +20,12 @@ const MainProduct = ({ product }) => {
         }
     };
 
+    const handleBuyNow = () => {
+        navigate('/cart', { state: { product, quantity: 1 } });
+    };
 
     return (
-        <Space align="center" size={32} >
+        <Space align="center" size={32}>
             <Image
                 alt={product.name}
                 src={require(`../../assets/${product.image}`)}
@@ -51,7 +49,7 @@ const MainProduct = ({ product }) => {
                 </Title>
 
                 <Flex align="center" gap={8}>
-                    <Title level={5} style={{ fontWeight: 'bold', height: "48px" }} >Số lượng: </Title>
+                    <Title level={5} style={{ fontWeight: 'bold', height: "48px" }}>Số lượng:</Title>
                     <InputNumber min={1} defaultValue={1} style={{ width: '168px' }} />
                 </Flex>
 
@@ -74,13 +72,14 @@ const MainProduct = ({ product }) => {
                             color: 'white',
                             border: 'none'
                         }}
+                        onClick={handleBuyNow}
                     >
                         Mua Ngay
                     </Button>
                 </Space>
             </div>
         </Space>
-    )
-}
+    );
+};
 
-export default MainProduct
+export default MainProduct;

@@ -27,7 +27,7 @@ const Cart = ({ item, onUpdateQuantity, onDelete, onToggleSelect }) => {
                     <Image
                         src={require(`../assets/${item.product.image}`)}
                         alt={item.name}
-                        style={{ objectFit: 'contain', height: '100px' }}
+                        style={{ objectFit: 'contain', width: '100px', height: '100px' }}
                     />
                 </Col>
                 <Col xs={24} sm={8} md={8} lg={6}>

@@ -47,23 +47,22 @@ const AddressCard = () => {
                 onCancel={handleCancel}
             >
                 <div>
-                    <p>Họ và tên:</p>
+                    <Text>Họ và tên:</Text>
                     <Input placeholder="Enter your name" />
-                    <p>Số điện thoại:</p>
+                    <Text>Số điện thoại:</Text>
                     <Input placeholder="Enter your phone number" />
-                    <p>Select city:</p>
-                    <Select defaultValue="Hồ Chí Minh" style={{ width: 120 }}>
+                    <Text>Tỉnh/Thành phố:</Text>
+                    <Select defaultValue="Hồ Chí Minh" style={{ width: "100%" }}>
                         <Option value="Hồ Chí Minh">Hồ Chí Minh</Option>
                         <Option value="Hà Nội">Hà Nội</Option>
-                        {/* Add more options as needed */}
                     </Select>
-                    <p>Quận/Huyện:</p>
-                    <Select defaultValue="Quận 1" style={{ width: 120 }}>
+                    <Text>Quận/Huyện:</Text>
+                    <Select defaultValue="Quận 1" style={{ width: "100%" }}>
                         <Option value="Quận 1">Quận 1</Option>
                         <Option value="Quận 2">Quận 2</Option>
                         {/* Add more options as needed */}
                     </Select>
-                    <p>Địa chỉ cụ thể:</p>
+                    <Text>Địa chỉ cụ thể:</Text>
                     <Input.TextArea rows={4} placeholder="Enter your detailed address" />
                 </div>
             </Modal>

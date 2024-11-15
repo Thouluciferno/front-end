@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Typography, Card, Button, Space, Checkbox, Flex } from 'antd';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate instead of useHistory
+import { useNavigate } from 'react-router-dom';
 import "./CartPage.css";
 
 import { Cart, TopCategories } from "../components/index";
@@ -8,14 +8,17 @@ import { Cart, TopCategories } from "../components/index";
 import cartApi from '../services/api/cartApi';
 import { Heading } from '../layouts/index';
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 const CartPage = () => {
-    const navigate = useNavigate(); // Initialize useNavigate
+
+    const navigate = useNavigate();
 
 
     const [cartItems, setCartItems] = useState([]);
     const [totalAmount, setTotalAmount] = useState(0);
+
+
 
     useEffect(() => {
         const fetchCartItems = async () => {
@@ -36,6 +39,7 @@ const CartPage = () => {
 
         fetchCartItems();
     }, []);
+
 
     // Function to update quantity
     const onUpdateQuantity = (key, value) => {
@@ -116,8 +120,6 @@ const CartPage = () => {
 
     return (
         <div className="cart-page-container">
-            <Title level={2}>Shopping Cart</Title>
-
             <Flex className="cart-items-container" vertical justify="space-between" gap={16} >
 
                 {cartItems.map(item => (

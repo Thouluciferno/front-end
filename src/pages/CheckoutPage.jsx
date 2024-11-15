@@ -1,62 +1,76 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Button, Space, Typography, Divider } from 'antd';
 import { Flex } from 'antd';
-import { AddressCard, ProductCard } from "../components/index";
+import { AddressCard, Cart } from "../components/index";
+
+
+import cartApi from '../services/api/cartApi';
 
 const { Title } = Typography;
 
 const CheckoutPage = () => {
-    const [cartItems, setCartItems] = useState([
-        {
-            key: '1',
-            name: 'The Best Product of All Time',
-            image: 'https://via.placeholder.com/80', // Smaller image size
-            price: 10,
-            quantity: 2,
-            total: 20,
-            checked: false,
-        },
-        {
-            key: '2',
-            name: 'Knife of Destiny - 3D',
-            image: 'https://via.placeholder.com/80', // Smaller image size
-            price: 15,
-            quantity: 1,
-            total: 15,
-            checked: false,
-        },
-    ]);
 
-    // Calculate total price
-    const totalPrice = cartItems.reduce((acc, item) => acc + item.total, 0);
+    const [cartItems, setCartItems] = useState([]);
+    const [totalAmount, setTotalAmount] = useState(0);
+
+    useEffect(() => {
+        const fetchCartItems = async () => {
+            try {
+                const response = await cartApi.myCart();
+
+                const cartItemsData = response.data;
+
+                setCartItems(cartItemsData);
+
+
+                // Calculate total amount
+
+            } catch (error) {
+                console.error("Error fetching cart items:", error);
+            }
+        };
+
+        fetchCartItems();
+    }, []);
+
+
+    const onToggleSelect = (key, checked) => {
+        console.log(key, checked);
+
+        setCartItems(prevItems => {
+            const updatedItems = prevItems.map(item =>
+                item.id === key ? { ...item, checked } : item
+            );
+
+            // Calculate total amount based on selected items
+            const newTotalAmount = updatedItems.reduce((total, item) => total + (item.checked ? item.product.price * item.quantity : 0), 0);
+            setTotalAmount(newTotalAmount);
+
+            return updatedItems;
+        });
+    };
 
     return (
         <div style={{ padding: '20px' }}>
-            <Title level={2}>Checkout</Title>
 
-            {/* Address card */}
             <Card style={{ marginBottom: '20px' }}>
                 <AddressCard />
             </Card>
 
-            {/* Product card */}
             <Card style={{ marginBottom: '20px' }}>
                 {cartItems.map((item, index) => (
-                    <ProductCard key={index} item={item} />
+                    <Cart key={index} item={item} />
                 ))}
             </Card>
-
-            {/* Total price card with payment button */}
             <Card>
+
                 <Flex justify="space-between" align="center" style={{ padding: '20px' }}>
-                    {/* Left side content */}
                     <Space direction="vertical">
                         <Title level={4}>Phương thức thanh toán</Title>
                         <Divider />
                     </Space>
-                    {/* Right side content */}
+
                     <Space direction="vertical">
-                        <Title level={4}>Tổng thành tiền: ${totalPrice}</Title>
                         <Button type="primary" style={{ width: "168px", height: "40px", backgroundColor: 'orange' }}>Thanh toán</Button>
                     </Space>
                 </Flex>

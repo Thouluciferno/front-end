@@ -12,11 +12,16 @@ const setAuthHeader = () => {
 const addressApi = {
     create: async (address) => {
         setAuthHeader();
-        return axios.post('/addresses', address);
+        return axios.post('/address/create', address);
     },
     myAddresses: async () => {
         setAuthHeader();
         return axios.get('/address/myAddress');
+    },
+
+    update: async (address) => {
+        setAuthHeader();
+        return axios.put(`/address/update`, address);
     },
 
 };
