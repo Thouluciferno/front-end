@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Space, Typography, Divider, Row, Col } from 'antd';
 import { Flex } from 'antd';
+import { useLocation } from 'react-router-dom';
 import { AddressCard, Checkout } from "../components/index";
 
 
@@ -10,29 +11,35 @@ const { Title, Text } = Typography;
 
 const CheckoutPage = () => {
 
+    const location = useLocation();
+
+    const { saveItemsToggle } = location.state || {}; // Default to {} to prevent errors if state is undefined
+
+    console.log(saveItemsToggle); // This should log the data you passed from the previous page
+
     const [cartItems, setCartItems] = useState([]);
     const [totalAmount, setTotalAmount] = useState(0);
 
     useEffect(() => {
         const fetchCartItems = async () => {
+            if (!saveItemsToggle || saveItemsToggle.length === 0) return;
+
             try {
-                const response = await cartApi.myCart();
+                const response = await cartApi.findAllById(saveItemsToggle);
+                setCartItems(response.data);
 
-                const cartItemsData = response.data;
-
-                setCartItems(cartItemsData);
-
-                console.log(cartItemsData);
+                console.log("Fetched Cart Items:", response.data);
 
                 // Calculate total amount
-
+                const total = response.data.reduce((sum, item) => sum + item.price * item.quantity, 0);
+                setTotalAmount(total);
             } catch (error) {
                 console.error("Error fetching cart items:", error);
             }
         };
 
         fetchCartItems();
-    }, []);
+    }, [saveItemsToggle]); // Ensure useEffect re-runs if `saveItemsToggle` changes
 
     return (
         <div style={{ padding: '20px' }}>
@@ -73,7 +80,13 @@ const CheckoutPage = () => {
                         <Divider />
                     </Space>
 
-                    <Space direction="vertical">
+                    <Space justify="space-between" align="center" gap={16}>
+                        <Text style={{ fontSize: "20px", fontWeight: "bold" }}>Tổng:
+                            <Text strong
+                                style={{ fontSize: "20px", fontWeight: "bold", color: "red" }}
+                            > ₫{totalAmount}</Text>
+                        </Text>
+
                         <Button type="primary" style={{ width: "168px", height: "40px", backgroundColor: 'orange' }}>Thanh toán</Button>
                     </Space>
                 </Flex>

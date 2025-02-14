@@ -34,7 +34,7 @@ const Checkout = ({ item }) => {
                 </Col>
                 <Col xs={24} sm={8} md={6} lg={4}>
                     <Text
-                        style={{ float: "right" }}
+                        style={{ float: "right", color: "orange", fontWeight: "bold" }}
                         strong
                     >₫ {item.product.price * item.quantity}</Text>
                 </Col>

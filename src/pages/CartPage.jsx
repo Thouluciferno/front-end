@@ -16,6 +16,7 @@ const CartPage = () => {
 
 
     const [cartItems, setCartItems] = useState([]);
+    const [saveItemsToggle, setSaveItemsToggle] = useState([]);
     const [totalAmount, setTotalAmount] = useState(0);
 
 
@@ -94,15 +95,16 @@ const CartPage = () => {
 
     // Function to proceed to payment
     const handlePayment = () => {
-        console.log("Total Amount:", totalAmount);
 
-        navigate('/checkout');
+        if (saveItemsToggle.length > 0) {
+            navigate('/checkout', { state: { saveItemsToggle } });
 
+            console.log(saveItemsToggle);
+        }
 
     };
 
     const onToggleSelect = (key, checked) => {
-        console.log(key, checked);
 
         setCartItems(prevItems => {
             const updatedItems = prevItems.map(item =>
@@ -111,10 +113,20 @@ const CartPage = () => {
 
             // Calculate total amount based on selected items
             const newTotalAmount = updatedItems.reduce((total, item) => total + (item.checked ? item.product.price * item.quantity : 0), 0);
+
             setTotalAmount(newTotalAmount);
+
 
             return updatedItems;
         });
+
+        if (checked) {
+            setSaveItemsToggle([...saveItemsToggle, key]);
+
+            console.log(saveItemsToggle);
+        } else {
+            setSaveItemsToggle(saveItemsToggle.filter(item => item !== key));
+        }
     };
 
 
@@ -153,6 +165,7 @@ const CartPage = () => {
             </Card>
             <Heading title="You Maybe Favorite" disable={false} />
             <TopCategories />
+
         </div>
     );
 };

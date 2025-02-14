@@ -16,6 +16,11 @@ const cartApi = {
         return axios.get('/carts/myCart');
     },
 
+    findAllById: async (ids) => {
+        setAuthHeader();
+        return axios.post(`/carts/findAllById`, { ids }); // Send IDs as a body payload
+    },
+
     addToCart: async (productId, quantity) => {
         setAuthHeader();
         return axios.post(`/carts/create`, { productId, quantity });
