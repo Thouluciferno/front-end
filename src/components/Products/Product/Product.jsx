@@ -27,7 +27,10 @@ const Product = (prop) => {
                     <Typography.Text style={{ margin: 0 }}>${prop.price}</Typography.Text>
                 </Flex>
                 <Button
-                    icon={<ShoppingCartOutlined />} />
+                    icon={<ShoppingCartOutlined />}
+                    type="primary"
+                    style={{ width: '20%' }}
+                />
             </Flex>
         </Card>
     )

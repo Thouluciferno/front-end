@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Button, Space, Typography, Divider } from 'antd';
+import { Card, Button, Space, Typography, Divider, Row, Col } from 'antd';
 import { Flex } from 'antd';
-import { AddressCard, Cart } from "../components/index";
+import { AddressCard, Checkout } from "../components/index";
 
 
 import cartApi from '../services/api/cartApi';
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 const CheckoutPage = () => {
 
@@ -22,6 +22,7 @@ const CheckoutPage = () => {
 
                 setCartItems(cartItemsData);
 
+                console.log(cartItemsData);
 
                 // Calculate total amount
 
@@ -33,23 +34,6 @@ const CheckoutPage = () => {
         fetchCartItems();
     }, []);
 
-
-    const onToggleSelect = (key, checked) => {
-        console.log(key, checked);
-
-        setCartItems(prevItems => {
-            const updatedItems = prevItems.map(item =>
-                item.id === key ? { ...item, checked } : item
-            );
-
-            // Calculate total amount based on selected items
-            const newTotalAmount = updatedItems.reduce((total, item) => total + (item.checked ? item.product.price * item.quantity : 0), 0);
-            setTotalAmount(newTotalAmount);
-
-            return updatedItems;
-        });
-    };
-
     return (
         <div style={{ padding: '20px' }}>
 
@@ -58,12 +42,31 @@ const CheckoutPage = () => {
             </Card>
 
             <Card style={{ marginBottom: '20px' }}>
+                {/* Header Row for Product Details */}
+                <Row gutter={[16, 16]} align="middle" style={{ marginBottom: '32px' }}>
+                    <Col xs={24} sm={8} md={8} lg={4}>
+                        <Text strong>Sản phẩm</Text>
+                    </Col>
+                    <Col xs={24} sm={8} md={8} lg={6}>
+                        <Text strong>Tên Sản Phẩm</Text>
+                    </Col>
+                    <Col xs={24} sm={4} md={3} lg={4}>
+                        <Text strong>Đơn giá</Text>
+                    </Col>
+                    <Col xs={24} sm={4} md={3} lg={4}>
+                        <Text strong>Số lượng</Text>
+                    </Col>
+                    <Col xs={24} sm={8} md={6} lg={4}>
+                        <Text strong
+                            style={{ float: "right" }}
+                        >Thành tiền</Text>
+                    </Col>
+                </Row>
                 {cartItems.map((item, index) => (
-                    <Cart key={index} item={item} />
+                    <Checkout key={index} item={item} />
                 ))}
             </Card>
             <Card>
-
                 <Flex justify="space-between" align="center" style={{ padding: '20px' }}>
                     <Space direction="vertical">
                         <Title level={4}>Phương thức thanh toán</Title>

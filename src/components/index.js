@@ -25,6 +25,7 @@ import MainProduct from "./DetailProduct/MainProduct";
 // 
 
 import Cart from "./Cart";
+import Checkout from "./Checkout";
 
 // Admin
 
@@ -36,8 +37,9 @@ import AdminFooter from "./Admin/AdminFooter";
 
 import ProductPage from "./Admin/Product/Products";
 
+
 export {
     Feature, HeaderNav, LogoBanner, Testimonial, Button, Products, TopCategories, Categories,
     Tab, Product, UserProfile, CartProfile, Cart, Pagination,
-    AddressCard, ProductCard, AdminSidebar, AdminFooter, AdminDashboard, CurrentAddress, DetailProduct, MainProduct
+    AddressCard, ProductCard, AdminSidebar, AdminFooter, AdminDashboard, CurrentAddress, DetailProduct, MainProduct, Checkout
 }

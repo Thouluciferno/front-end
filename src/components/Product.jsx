@@ -59,7 +59,6 @@ const Product = (prop) => {
                     <Title
                         level={5}
                         style={{ margin: 0, padding: 0, transition: 'color 0.3s' }}
-
                     >
                         ${prop.price}
                     </Title>
