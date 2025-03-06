@@ -121,9 +121,12 @@ const CartPage = () => {
         });
 
         if (checked) {
+
             setSaveItemsToggle([...saveItemsToggle, key]);
 
-            console.log(saveItemsToggle);
+            console.log("Data sent to backend:", JSON.stringify(saveItemsToggle));
+
+
         } else {
             setSaveItemsToggle(saveItemsToggle.filter(item => item !== key));
         }

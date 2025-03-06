@@ -13,7 +13,7 @@ const CheckoutPage = () => {
 
     const location = useLocation();
 
-    const { saveItemsToggle } = location.state || {}; // Default to {} to prevent errors if state is undefined
+    const { saveItemsToggle } = location.state || { saveItemsToggle: [] };
 
     console.log(saveItemsToggle); // This should log the data you passed from the previous page
 
@@ -28,7 +28,6 @@ const CheckoutPage = () => {
                 const response = await cartApi.findAllById(saveItemsToggle);
                 setCartItems(response.data);
 
-                console.log("Fetched Cart Items:", response.data);
 
                 // Calculate total amount
                 const total = response.data.reduce((sum, item) => sum + item.price * item.quantity, 0);

@@ -18,7 +18,9 @@ const cartApi = {
 
     findAllById: async (ids) => {
         setAuthHeader();
-        return axios.post(`/carts/findAllById`, { ids }); // Send IDs as a body payload
+        console.log("Sending IDs:", ids);
+        console.log("Formatted JSON:", JSON.stringify(ids));
+        return axios.post(`/carts/filter`, ids); // Send IDs as a body payload
     },
 
     addToCart: async (productId, quantity) => {
