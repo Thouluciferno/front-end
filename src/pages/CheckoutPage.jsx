@@ -30,7 +30,9 @@ const CheckoutPage = () => {
 
 
                 // Calculate total amount
-                const total = response.data.reduce((sum, item) => sum + item.price * item.quantity, 0);
+                const total = response.data.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+
+                console.log("Total amount:", total);
                 setTotalAmount(total);
             } catch (error) {
                 console.error("Error fetching cart items:", error);

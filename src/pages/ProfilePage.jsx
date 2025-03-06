@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Layout, Menu, Avatar, Upload, message, Typography, Row, Col } from 'antd'; // Import Pagination
 import { UserOutlined, ShoppingCartOutlined, InfoCircleOutlined } from '@ant-design/icons';
-import { CartProfile, UserProfile, Pagination } from "../components/index";
+import { OrderProfile, UserProfile, Pagination } from "../components/index";
 import "./ProfilePage.css";
 
 const { Content, Sider } = Layout;
@@ -37,35 +37,6 @@ const ProfilePage = () => {
             title: 'Sample Product 1',
             text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
             quantity: 2,
-            price: 25.99
-        },
-        {
-            img: "../assets/chair/Image.png",
-            title: 'Sample Product 2',
-            text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-            quantity: 4,
-            price: 25.99
-        },
-        {
-            img: "../assets/chair/Image.png",
-            title: 'Sample Product 3',
-            text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-            quantity: 3,
-            price: 25.99
-        },
-        {
-            img: "../assets/chair/Image.png",
-            title: 'Sample Product 3',
-            text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-            quantity: 3,
-            price: 25.99
-        },
-
-        {
-            img: "../assets/chair/Image.png",
-            title: 'Sample Product 3',
-            text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-            quantity: 3,
             price: 25.99
         }
     ];
@@ -104,26 +75,24 @@ const ProfilePage = () => {
                     onClick={handleMenuClick}
                 >
                     <Menu.Item key="profile" icon={<UserOutlined />}>
-                        Profile Info
+                        Profile
                     </Menu.Item>
                     <Menu.Item key="cart" icon={<ShoppingCartOutlined />}>
-                        Cart Info
+                        Orders
                     </Menu.Item>
-                    <Menu.Item key="something" icon={<InfoCircleOutlined />}>
-                        Something Info
-                    </Menu.Item>
+                    {/* <Menu.Item key="something" icon={<InfoCircleOutlined />}>
+                        Something Information
+                    </Menu.Item> */}
                 </Menu>
             </Sider>
             <Layout>
                 <Content style={{ padding: '0 24px', minHeight: 280 }}>
                     {selectedMenuKey === 'profile' && (
-                        <div>
-                            <UserProfile />
-                        </div>
+                        <UserProfile />
                     )}
                     {selectedMenuKey === 'cart' && (
                         <div>
-                            <CartProfile items={slicedItems} />
+                            <OrderProfile items={slicedItems} />
                             <Pagination
                                 total={items.length}
                                 pageSize={pageSize}

@@ -108,18 +108,7 @@ const UserProfile = () => {
                     initialValues={userData}
                 >
                     <Row gutter={[16, 16]} justify="start">
-                        {/* <Col xs={24} sm={12} lg={6}>
-                            <FormItem
-                                label="Username"
-                                name="username"
-                                rules={[
-                                    { required: true, message: 'Please input your username!' },
-                                    { min: 3, message: 'Username must be at least 3 characters' }
-                                ]}
-                            >
-                                <Input />
-                            </FormItem>
-                        </Col> */}
+
                         <Col xs={24} sm={12} lg={6}>
                             <FormItem
                                 label="Phone Number"

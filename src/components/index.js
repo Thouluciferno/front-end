@@ -10,7 +10,7 @@ import Categories from "./Category/Categories";
 import Tab from "./Tab";
 
 import UserProfile from "./Profile/UserProfile/UserProfile";
-import CartProfile from "./Profile/CartProfile/CartProfile";
+import OrderProfile from "./Profile/OrderProfile/OrderProfile";
 
 import AddressCard from "./Checkout/AddressCard";
 import ProductCard from "./Checkout/ProductCard";
@@ -40,6 +40,6 @@ import ProductPage from "./Admin/Product/Products";
 
 export {
     Feature, HeaderNav, LogoBanner, Testimonial, Button, Products, TopCategories, Categories,
-    Tab, Product, UserProfile, CartProfile, Cart, Pagination,
+    Tab, Product, UserProfile, OrderProfile, Cart, Pagination,
     AddressCard, ProductCard, AdminSidebar, AdminFooter, AdminDashboard, CurrentAddress, DetailProduct, MainProduct, Checkout
 }
