@@ -1,21 +1,23 @@
-import React, { useState } from 'react';
-import { Layout, Menu, Avatar, Upload, message, Typography, Row, Col } from 'antd'; // Import Pagination
-import { UserOutlined, ShoppingCartOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import React, { useState, useEffect } from 'react';
+import { Layout, Menu, Avatar, Upload, message, Typography, Row, Col } from 'antd';
+import { UserOutlined, ShoppingCartOutlined } from '@ant-design/icons';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import { OrderProfile, UserProfile, Pagination } from "../components/index";
+
+import orderDetailApi from '../services/api/orderDetailApi';
+
 import "./ProfilePage.css";
 
 const { Content, Sider } = Layout;
 const { Text } = Typography;
 
 const ProfilePage = () => {
-    const [selectedMenuKey, setSelectedMenuKey] = useState("profile");
+    const [items, setItems] = useState([]);
     const [avatar, setAvatar] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
-    const pageSize = 4; // Number of items per page
+    const pageSize = 4;
 
-    const handleMenuClick = (e) => {
-        setSelectedMenuKey(e.key);
-    };
+    const navigate = useNavigate();
 
     const handleAvatarChange = (info) => {
         if (info.file.status === 'done') {
@@ -30,21 +32,20 @@ const ProfilePage = () => {
         setCurrentPage(page);
     };
 
-    // Sample item data
-    const items = [
-        {
-            img: "../assets/chair/Image.png",
-            title: 'Sample Product 1',
-            text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-            quantity: 2,
-            price: 25.99
+    const fetchOrderDetails = async () => {
+        try {
+            const response = await orderDetailApi.getOrderDetail();
+            setItems(response.data);
+        } catch (error) {
+            console.error("Error fetching order details:", error);
         }
-    ];
+    };
 
-    // Calculate total number of pages
+    useEffect(() => {
+        fetchOrderDetails();
+    }, []);
+
     const totalPages = Math.ceil(items.length / pageSize);
-
-    // Slice items array based on current page and page size
     const startIndex = (currentPage - 1) * pageSize;
     const endIndex = Math.min(startIndex + pageSize, items.length);
     const slicedItems = items.slice(startIndex, endIndex);
@@ -54,10 +55,7 @@ const ProfilePage = () => {
             <Sider width={300} style={{ background: '#fff' }}>
                 <Row justify="center" align="middle" style={{ margin: '24px 0' }}>
                     <Col>
-                        <Upload
-                            beforeUpload={() => false}
-                            onChange={handleAvatarChange}
-                        >
+                        <Upload beforeUpload={() => false} onChange={handleAvatarChange}>
                             {avatar ? (
                                 <Avatar size={64} src={URL.createObjectURL(avatar)} />
                             ) : (
@@ -71,40 +69,40 @@ const ProfilePage = () => {
                 </Row>
                 <Menu
                     mode="inline"
-                    selectedKeys={[selectedMenuKey]}
-                    onClick={handleMenuClick}
+                    onClick={({ key }) => navigate(key)}
                 >
-                    <Menu.Item key="profile" icon={<UserOutlined />}>
+                    <Menu.Item key="user" icon={<UserOutlined />}>
                         Profile
                     </Menu.Item>
-                    <Menu.Item key="cart" icon={<ShoppingCartOutlined />}>
+                    <Menu.Item key="orders" icon={<ShoppingCartOutlined />}>
                         Orders
                     </Menu.Item>
-                    {/* <Menu.Item key="something" icon={<InfoCircleOutlined />}>
-                        Something Information
-                    </Menu.Item> */}
                 </Menu>
             </Sider>
+
             <Layout>
                 <Content style={{ padding: '0 24px', minHeight: 280 }}>
-                    {selectedMenuKey === 'profile' && (
-                        <UserProfile />
-                    )}
-                    {selectedMenuKey === 'cart' && (
-                        <div>
-                            <OrderProfile items={slicedItems} />
-                            <Pagination
-                                total={items.length}
-                                pageSize={pageSize}
-                                current={currentPage}
-                                onChange={handlePageChange}
-                            />
-                        </div>
-                    )}
+                    <Routes>
+                        <Route path="user" element={<UserProfile />} />
+                        <Route
+                            path="orders"
+                            element={
+                                <>
+                                    <OrderProfile items={slicedItems} />
+                                    <Pagination
+                                        total={items.length}
+                                        pageSize={pageSize}
+                                        current={currentPage}
+                                        onChange={handlePageChange}
+                                    />
+                                </>
+                            }
+                        />
+                    </Routes>
                 </Content>
             </Layout>
         </Layout>
     );
-}
+};
 
 export default ProfilePage;

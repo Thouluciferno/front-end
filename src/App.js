@@ -81,7 +81,7 @@ function AppContent() {
           )}
 
           {/* Protected routes */}
-          <Route path="/profile" element={<PrivateRoute element={<ProfilePage />} />} />
+          <Route path="/profile/*" element={<PrivateRoute element={<ProfilePage />} />} />
           <Route path="/cart" element={<PrivateRoute element={<CartPage />} />} />
           <Route path="/checkout" element={<PrivateRoute element={<CheckoutPage />} />} />
 

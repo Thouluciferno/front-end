@@ -6,6 +6,8 @@ import { AddressCard, Checkout } from "../components/index";
 
 
 import cartApi from '../services/api/cartApi';
+import orderApi from '../services/api/orderApi';
+import orderDetailApi from '../services/api/orderDetailApi';
 
 const { Title, Text } = Typography;
 
@@ -28,7 +30,6 @@ const CheckoutPage = () => {
                 const response = await cartApi.findAllById(saveItemsToggle);
                 setCartItems(response.data);
 
-
                 // Calculate total amount
                 const total = response.data.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
 
@@ -41,6 +42,48 @@ const CheckoutPage = () => {
 
         fetchCartItems();
     }, [saveItemsToggle]); // Ensure useEffect re-runs if `saveItemsToggle` changes
+
+
+    const handleCheckout = async () => { // Add this function
+        try {
+
+            const order = {
+                "paymentMethod": "Tiền Mặt",
+            };
+
+
+            const response = await orderApi.createOrder(order);
+
+
+            const orderId = response.data.id; // Get the order ID from the response
+
+
+            console.log("Order ID:", orderId);
+
+            const orderDetails = cartItems.map((item) => ({
+                "orderId": orderId,
+                "productId": item.product.id,
+                "quantity": item.quantity,
+            }));
+
+
+            const orderDetailPromises = orderDetails.map((orderDetail) =>
+                orderDetailApi.createOrderDetail(orderDetail)
+            );
+
+            await Promise.all(orderDetailPromises); // Wait for all order details to be created
+
+            console.log("Order details:", orderDetails);
+
+            window.location.href = "/profile/orders"; // Redirect to the orders page after successful checkout
+
+
+
+
+        } catch (error) {
+            console.error("Error creating order:", error);
+        }
+    }
 
     return (
         <div style={{ padding: '20px' }}>
@@ -69,7 +112,7 @@ const CheckoutPage = () => {
                             style={{ float: "right" }}
                         >Thành tiền</Text>
                     </Col>
-                </Row>
+                </Row   >
                 {cartItems.map((item, index) => (
                     <Checkout key={index} item={item} />
                 ))}
@@ -88,7 +131,9 @@ const CheckoutPage = () => {
                             > ₫{totalAmount}</Text>
                         </Text>
 
-                        <Button type="primary" style={{ width: "168px", height: "40px", backgroundColor: 'orange' }}>Thanh toán</Button>
+                        <Button type="primary"
+                            onClick={handleCheckout}
+                            style={{ width: "168px", height: "40px", backgroundColor: 'orange' }}>Thanh toán</Button>
                     </Space>
                 </Flex>
             </Card>
