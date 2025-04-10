@@ -1,26 +1,12 @@
 // AdminLayout.js
 import React from 'react';
-import { Layout, Row, Col } from 'antd';
-import { AdminFooter, AdminSidebar, AdminDashboard } from '../../components';
+import { AdminDashboard } from '../../components';
 
-const { Content } = Layout;
 
-const AdminLayout = ({ children }) => {
+const AdminPage = () => {
     return (
-        <Layout>
-            <Content>
-                <Row>
-                    <Col span={4}>
-                        <AdminSidebar />
-                    </Col>
-                    <Col span={20}>
-                        {children ? children : <AdminDashboard />}
-                    </Col>
-                </Row>
-            </Content>
-            <AdminFooter />
-        </Layout>
+        <AdminDashboard />
     );
 }
 
-export default AdminLayout;
+export default AdminPage;

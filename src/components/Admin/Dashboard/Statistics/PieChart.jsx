@@ -8,12 +8,13 @@ const PieChart = ({ topProducts }) => {
     const pageSize = 4; // Limit of products shown per page
 
     useEffect(() => {
-        // Sample data for the pie chart
+        // Extract product names for labels
         const data = {
-            labels: ['Product a1111111', 'Product 2', 'Product 3', 'Product 4', 'Product 5', 'Product 6', 'Product 7', 'Product 8'],
+            // labels with top products names 
+            labels: ['Product 1', 'Product 2', 'Product 3', 'Product 4', 'Product 5', 'Product 6', 'Product 7', 'Product 8'],
             datasets: [{
                 label: 'Product Orders',
-                data: [20, 15, 25, 25, 15, 10, 30, 20],
+                data: [20, 15, 25, 25, 15, 10, 30, 20], // Sample data for orders
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.6)',
                     'rgba(54, 162, 235, 0.6)',

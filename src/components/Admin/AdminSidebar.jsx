@@ -15,15 +15,11 @@ const AdminSidebar = () => {
 
     // Define mapping of menu item names to links
     const menuLinkMapping = {
-        'Dashboard': '/admin/*',
+        'Dashboard': '/admin',
         'Tạo Sản Phẩm': '/admin/products',
-        'Danh Sách Sản Phẩm': '/product-list',
+        'Danh Sách Sản Phẩm': '/products-list',
         'Orders': '/orders',
-        'Order 1': '/order-1',
-        'Order 2': '/order-2',
         'Customers': '/customers',
-        'Customer 1': '/customer-1',
-        'Customer 2': '/customer-2',
         'Settings': '/settings',
         'General': '/general-settings',
         'Security': '/security-settings'
@@ -48,12 +44,8 @@ const AdminSidebar = () => {
             case 'Danh Sách Sản Phẩm':
                 return <ShoppingOutlined />;
             case 'Orders':
-            case 'Order 1':
-            case 'Order 2':
                 return <ProfileOutlined />;
             case 'Customers':
-            case 'Customer 1':
-            case 'Customer 2':
                 return <UserOutlined />;
             case 'Settings':
             case 'General':
@@ -72,12 +64,9 @@ const AdminSidebar = () => {
                 {generateMenuItem('Danh Sách Sản Phẩm')}
             </SubMenu>
             <SubMenu key="orders" title="Orders" icon={<ProfileOutlined />}>
-                {generateMenuItem('Order 1')}
-                {generateMenuItem('Order 2')}
+                {generateMenuItem('Orders Detail')}
             </SubMenu>
             <SubMenu key="customers" title="Customers" icon={<UserOutlined />}>
-                {generateMenuItem('Customer 1')}
-                {generateMenuItem('Customer 2')}
             </SubMenu>
             <SubMenu key="settings" title="Settings" icon={<SettingOutlined />}>
                 {generateMenuItem('General')}

@@ -4,13 +4,11 @@ import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'r
 import { Layout } from 'antd';
 import HeaderNav from './components/HeaderNav';
 import Footer from './layouts/Footer';
+import AdminLayout from './layouts/AdminLayout';
 import {
   HomePage, ProductPage, ProfilePage, CartPage, LoginPage, RegisterPage, CheckoutPage,
-  DetailProduct, NotFoundPage
+  DetailProduct, NotFoundPage, AdminPage, ProductAdminPage, UserPage
 } from "./pages/index.js";
-
-
-import AdminPage from "./pages/Admin/AdminPage.jsx";
 
 import axios from './utils/axiosConfig.jsx';
 import PrivateRoute from './utils/PrivateRoute';
@@ -65,6 +63,7 @@ function AppContent() {
   return (
     <Layout className="layout">
       {!isAdminRoute && <HeaderNav isAuthenticated={isAuthenticated} />}
+
       <Content style={{ padding: '0 50px' }}>
         <Routes>
           {/* Public routes */}
@@ -80,13 +79,18 @@ function AppContent() {
             </>
           )}
 
+
           {/* Protected routes */}
           <Route path="/profile/*" element={<PrivateRoute element={<ProfilePage />} />} />
           <Route path="/cart" element={<PrivateRoute element={<CartPage />} />} />
           <Route path="/checkout" element={<PrivateRoute element={<CheckoutPage />} />} />
 
           {/* Admin Routes */}
-          <Route path="/admin/*" element={<PrivateRoute element={<AdminPage />} allowedRoles={['ADMIN']} />} />
+          <Route path="/admin" element={<PrivateRoute element={<AdminLayout />} allowedRoles={['ADMIN']} />}>
+            <Route index element={<AdminPage />} />  {/* /admin */}
+            <Route path="products" element={<ProductAdminPage />} />  {/* /admin/products */}
+            <Route path="users" element={<UserPage />} />  {/* /admin/users */}
+          </Route>
 
           {/* Add Not Found Route */}
           <Route path="*" element={<NotFoundPage />} />
