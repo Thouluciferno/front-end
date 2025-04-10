@@ -33,13 +33,16 @@ import AdminDashboard from "./Admin/AdminDashboard";
 import AdminSidebar from "./Admin/AdminSidebar";
 import AdminFooter from "./Admin/AdminFooter";
 
+
 // Admin Component
 
-import ProductPage from "./Admin/Product/Products";
+import ProductAdmin from "./Admin/Product/Products";
 
 
 export {
     Feature, HeaderNav, LogoBanner, Testimonial, Button, Products, TopCategories, Categories,
     Tab, Product, UserProfile, OrderProfile, Cart, Pagination,
     AddressCard, ProductCard, AdminSidebar, AdminFooter, AdminDashboard, CurrentAddress, DetailProduct, MainProduct, Checkout
+    // Admin
+    , ProductAdmin
 }
