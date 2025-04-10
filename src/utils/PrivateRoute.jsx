@@ -9,6 +9,8 @@ function PrivateRoute({ element, allowedRoles }) {
         return <Navigate to="/login" replace />;
     }
 
+    console.log('User Role:', userRole);
+
     if (allowedRoles && !allowedRoles.includes(userRole)) {
         return <Navigate to="/" replace />;
     }

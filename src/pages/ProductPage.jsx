@@ -12,7 +12,7 @@ const ProductPage = () => {
     const [loading, setLoading] = useState(true);
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [error, setError] = useState(null);
-    const pageSize = 4;
+    const pageSize = 12;
     const [currentPage, setCurrentPage] = useState(1);
 
 

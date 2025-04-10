@@ -6,14 +6,14 @@ import PieChart from './Statistics/PieChart'
 import LineChart from './Statistics/LineChart';
 
 
-const DashboardStatistic = () => {
+const DashboardStatistic = ({ topProducts }) => {
     return (
         <div>
             <div>
                 <BarChart />
             </div>
             <div>
-                <PieChart />
+                <PieChart topProducts={topProducts} />
             </div>
             <div>
                 <LineChart />

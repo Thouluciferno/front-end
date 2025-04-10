@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Card, List, Avatar, Pagination } from 'antd';
 import Chart from 'chart.js/auto';
 
-const PieChart = () => {
+const PieChart = ({ topProducts }) => {
     const chartRef = useRef();
     const [currentPage, setCurrentPage] = useState(1);
     const pageSize = 4; // Limit of products shown per page

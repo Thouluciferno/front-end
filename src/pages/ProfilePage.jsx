@@ -71,7 +71,7 @@ const ProfilePage = () => {
                     mode="inline"
                     onClick={({ key }) => navigate(key)}
                 >
-                    <Menu.Item key="user" icon={<UserOutlined />}>
+                    <Menu.Item key="" icon={<UserOutlined />}>
                         Profile
                     </Menu.Item>
                     <Menu.Item key="orders" icon={<ShoppingCartOutlined />}>
@@ -83,7 +83,7 @@ const ProfilePage = () => {
             <Layout>
                 <Content style={{ padding: '0 24px', minHeight: 280 }}>
                     <Routes>
-                        <Route path="user" element={<UserProfile />} />
+                        <Route path="" element={<UserProfile />} />
                         <Route
                             path="orders"
                             element={

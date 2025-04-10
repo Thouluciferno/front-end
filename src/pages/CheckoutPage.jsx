@@ -64,16 +64,27 @@ const CheckoutPage = () => {
                 "orderId": orderId,
                 "productId": item.product.id,
                 "quantity": item.quantity,
+
             }));
+            // delete cart items
+            const deletePromises = saveItemsToggle.map((itemId) => cartApi.removeFromCart(itemId));
+            await Promise.all(deletePromises); // Wait for all delete operations to complete
+            console.log("Deleted cart items:", saveItemsToggle);
 
 
             const orderDetailPromises = orderDetails.map((orderDetail) =>
-                orderDetailApi.createOrderDetail(orderDetail)
+                orderDetailApi.createOrderDetail(orderDetail),
             );
 
             await Promise.all(orderDetailPromises); // Wait for all order details to be created
 
             console.log("Order details:", orderDetails);
+
+            // delete cart
+
+
+
+
 
             window.location.href = "/profile/orders"; // Redirect to the orders page after successful checkout
 

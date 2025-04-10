@@ -86,7 +86,7 @@ function AppContent() {
           <Route path="/checkout" element={<PrivateRoute element={<CheckoutPage />} />} />
 
           {/* Admin Routes */}
-          <Route path="/admin/*" element={<PrivateRoute element={<AdminPage />} allowedRoles={['admin']} />} />
+          <Route path="/admin/*" element={<PrivateRoute element={<AdminPage />} allowedRoles={['ADMIN']} />} />
 
           {/* Add Not Found Route */}
           <Route path="*" element={<NotFoundPage />} />

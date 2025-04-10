@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Image, InputNumber, Space, Typography, message, Flex } from 'antd';
 import { ShoppingCartOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
@@ -8,11 +8,13 @@ import cartApi from '../../services/api/cartApi';
 const { Title } = Typography;
 
 const MainProduct = ({ product }) => {
+    const [quantity, setQuantity] = useState(1); // State to manage quantity
+    const [address, setAddress] = useState(''); // State to manage address
     const navigate = useNavigate();
 
     const handleAddToCart = async () => {
         try {
-            await cartApi.addToCart(product.id, 1);
+            await cartApi.addToCart(product.id, quantity); // Use the quantity state
             message.success('Product added to cart successfully!');
         } catch (error) {
             console.error('Failed to add product to cart:', error);
@@ -20,8 +22,18 @@ const MainProduct = ({ product }) => {
         }
     };
 
-    const handleBuyNow = () => {
-        navigate('/cart', { state: { product, quantity: 1 } });
+    const handleBuyNow = async () => {
+
+        try {
+            await cartApi.addToCart(product.id, quantity);
+            message.success('Product added to cart successfully!');
+        } catch (error) {
+            console.error('Failed to add product to cart:', error);
+            message.error('Failed to add product to cart. Please try again.');
+        }
+
+        navigate('/cart'); // Navigate to the cart page after adding the product
+
     };
 
     return (
@@ -50,7 +62,7 @@ const MainProduct = ({ product }) => {
 
                 <Flex align="center" gap={8}>
                     <Title level={5} style={{ fontWeight: 'bold', height: "48px" }}>Số lượng:</Title>
-                    <InputNumber min={1} defaultValue={1} style={{ width: '168px' }} />
+                    <InputNumber min={1} defaultValue={1} style={{ width: '168px' }} onChange={(value) => setQuantity(value)} />
                 </Flex>
 
                 <CurrentAddress />

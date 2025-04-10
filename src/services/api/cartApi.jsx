@@ -28,9 +28,9 @@ const cartApi = {
         return axios.post(`/carts/create`, { productId, quantity });
     },
 
-    removeFromCart: async (productId) => {
+    removeFromCart: async (id) => {
         setAuthHeader();
-        return axios.delete(`/carts/${productId}`);
+        return axios.delete(`/carts/${id}`);
     },
 
     clearCart: async () => {

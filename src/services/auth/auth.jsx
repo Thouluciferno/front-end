@@ -24,6 +24,7 @@ const getUserRole = () => {
 
     try {
         const decodedToken = jwtDecode(token);
+        // console.log('Decoded Token:', decodedToken); // Debugging line
         return decodedToken.role;
     } catch (error) {
         return null;
