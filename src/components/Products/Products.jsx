@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Row, Col, Spin } from 'antd';
+import { Card, Button, Space, Typography, Divider, Row, Col, Spin } from 'antd';
 import Product from './Product/Product';
 
 import productApi from '../../services/api/productApi';
+
+const { Title, Text } = Typography;
 
 const Products = () => {
     const navigate = useNavigate();

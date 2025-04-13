@@ -16,8 +16,7 @@ const AdminSidebar = () => {
     // Define mapping of menu item names to links
     const menuLinkMapping = {
         'Dashboard': '/admin',
-        'Tạo Sản Phẩm': '/admin/products',
-        'Danh Sách Sản Phẩm': '/products-list',
+        'Danh Sách Sản Phẩm': '/admin/products',
         'Orders': '/orders',
         'Customers': '/customers',
         'Settings': '/settings',
@@ -40,7 +39,6 @@ const AdminSidebar = () => {
         switch (name) {
             case 'Dashboard':
                 return <DashboardOutlined />;
-            case 'Tạo Sản Phẩm':
             case 'Danh Sách Sản Phẩm':
                 return <ShoppingOutlined />;
             case 'Orders':
@@ -60,7 +58,6 @@ const AdminSidebar = () => {
         <Menu style={{ height: '100vh' }}>
             {generateMenuItem('Dashboard')}
             <SubMenu key="products" title="Products" icon={<ShoppingOutlined />}>
-                {generateMenuItem('Tạo Sản Phẩm')}
                 {generateMenuItem('Danh Sách Sản Phẩm')}
             </SubMenu>
             <SubMenu key="orders" title="Orders" icon={<ProfileOutlined />}>
